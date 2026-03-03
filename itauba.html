@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itaúba — Wood Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:     #0D1B2A;
+      --navy-mid: #1A2E42;
+      --white:    #FAFAF7;
+      --cream:    #F0EBE0;
+      --wood:     #8B6914;
+      --wood-lt:  #B8932A;
+      --gray:     #6B7280;
+      --gray-lt:  #E8E4DA;
+      --green:    #1a6b4a;
+      --red:      #c0392b;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --mono:     'DM Mono', monospace;
+      --sans:     'Outfit', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--white);
+      color: var(--navy);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(250,250,247,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-lt);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--navy); }
+    .nav-back::before { content: '←'; font-size: 0.8rem; }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .nav-fund-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--navy);
+    }
+
+    .nav-fund-sub {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--wood);
+    }
+
+    .nav-date {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    /* ── HERO HEADER ── */
+    .fund-header {
+      margin-top: 68px;
+      background: var(--navy);
+      padding: 3.5rem 3rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: end;
+    }
+
+    .fund-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood-lt);
+      margin-bottom: 0.75rem;
+    }
+
+    .fund-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .fund-strategy {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(250,250,247,0.5);
+    }
+
+    .fund-kpis {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .kpi {
+      text-align: right;
+    }
+
+    .kpi-value {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .kpi-value.pos { color: #4ade80; }
+    .kpi-value.neg { color: #f87171; }
+    .kpi-value.neutral { color: var(--white); }
+
+    .kpi-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(250,250,247,0.4);
+      margin-top: 0.25rem;
+    }
+
+    /* ── MAIN GRID ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 3rem 6rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid-full {
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-lt);
+      padding: 2rem;
+    }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--wood);
+    }
+
+    /* ── CHARTS ── */
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+
+    /* ── TABELA DE ATIVOS ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--navy);
+    }
+
+    thead th {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.58rem;
+      color: var(--gray);
+    }
+
+    thead th:not(:first-child) { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--gray-lt);
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: var(--cream); }
+
+    tbody td {
+      padding: 0.75rem;
+      color: var(--navy);
+    }
+
+    tbody td:not(:first-child) { text-align: right; }
+
+    .ticker {
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .asset-name {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    .pill-hold { background: #e8f5ee; color: #1a6b4a; }
+    .pill-watch { background: #fef9e7; color: #8B6914; }
+
+    .ret-pos { color: var(--green); }
+    .ret-neg { color: var(--red); }
+
+    /* ── LOG DE OPERAÇÕES ── */
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .log-item {
+      display: grid;
+      grid-template-columns: 90px 70px 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .log-item:last-child { border-bottom: none; }
+
+    .log-date { color: var(--gray); font-size: 0.62rem; }
+
+    .log-type {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      text-align: center;
+    }
+
+    .log-type.entrada { background: #e8f5ee; color: #1a6b4a; }
+    .log-type.saida   { background: #fde8e8; color: #c0392b; }
+    .log-type.rebal   { background: #e8eef5; color: #1a3a6b; }
+
+    .log-desc { color: var(--navy); font-family: var(--sans); font-size: 0.78rem; }
+    .log-motivo { color: var(--gray); font-size: 0.65rem; display: block; margin-top: 0.1rem; }
+
+    .log-result { font-size: 0.7rem; text-align: right; }
+
+    /* ── RESUMO DO MÊS ── */
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .resumo-mes {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--navy);
+    }
+
+    .resumo-mes p { margin-bottom: 1rem; }
+
+    .resumo-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+    .stat-key { color: var(--gray); letter-spacing: 0.05em; }
+    .stat-val { font-weight: 400; color: var(--navy); }
+    .stat-val.pos { color: var(--green); }
+    .stat-val.neg { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: rgba(250,250,247,0.3);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ── ANIMATE ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .fund-header { grid-template-columns: 1fr; }
+      .fund-kpis { justify-content: flex-start; }
+      .kpi { text-align: left; }
+      .resumo-grid { grid-template-columns: 1fr; }
+      .log-item { grid-template-columns: 80px 60px 1fr; }
+      .log-result { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      .main { padding: 2rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back">Wood Capital</a>
+  <div class="nav-title">
+    <span class="nav-fund-name">Itaúba</span>
+    <span class="nav-fund-sub">Fundo Estrutural · Inverse Volatility + Momentum 12-1</span>
+  </div>
+  <span class="nav-date">Ref. Fev 2026</span>
+</nav>
+
+<!-- HEADER -->
+<div class="fund-header">
+  <div>
+    <div class="fund-label">Fundo Estrutural · Wood Capital</div>
+    <h1 class="fund-title">Itaúba</h1>
+    <p class="fund-strategy">Inverse Volatility Weighting + Filtro Momentum 12-1</p>
+  </div>
+  <div class="fund-kpis">
+    <div class="kpi">
+      <div class="kpi-value pos">+8,48%</div>
+      <div class="kpi-label">Retorno Acum.</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value neg">−9,12%</div>
+      <div class="kpi-label">Alpha vs IBOV</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value neutral">R$ 108.480</div>
+      <div class="kpi-label">Patrimônio</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- CURVA + DRAWDOWN -->
+  <div class="grid-2">
+    <div class="card fade-in">
+      <div class="card-label">Patrimônio vs IBOV</div>
+      <div class="chart-wrap">
+        <canvas id="chartPatrimonio"></canvas>
+      </div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-label">Drawdown</div>
+      <div class="chart-wrap">
+        <canvas id="chartDrawdown"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA DE ATIVOS -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Carteira atual — 13 ativos · 5 pilares</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Ativo</th>
+          <th>Pilar</th>
+          <th>Peso %</th>
+          <th>Retorno Jan–Fev</th>
+          <th>Momentum 12-1</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="ticker">GMAT3</span><span class="asset-name">Grão-Mestre Part.</span></td>
+          <td>Descentralização</td>
+          <td>9,2%</td>
+          <td class="ret-pos">+27,0%</td>
+          <td class="ret-pos">↑ Forte</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">WEGE3</span><span class="asset-name">WEG S.A.</span></td>
+          <td>Energia</td>
+          <td>8,4%</td>
+          <td class="ret-pos">+5,2%</td>
+          <td class="ret-pos">↑ Positivo</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">ENEV3</span><span class="asset-name">Eneva S.A.</span></td>
+          <td>Energia</td>
+          <td>6,1%</td>
+          <td class="ret-neg">−3,4%</td>
+          <td class="ret-pos">↑ Positivo</td>
+          <td><span class="pill pill-watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">EGIE3</span><span class="asset-name">Engie Brasil</span></td>
+          <td>Energia</td>
+          <td>5,8%</td>
+          <td class="ret-neg">−1,8%</td>
+          <td class="ret-neg">↓ Fraco</td>
+          <td><span class="pill pill-watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">EQTL3</span><span class="asset-name">Equatorial Energia</span></td>
+          <td>Energia</td>
+          <td>6,3%</td>
+          <td class="ret-pos">+2,1%</td>
+          <td class="ret-pos">↑ Positivo</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">VALE3</span><span class="asset-name">Vale S.A.</span></td>
+          <td>Commodities</td>
+          <td>7,5%</td>
+          <td class="ret-pos">+4,7%</td>
+          <td class="ret-pos">↑ Positivo</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">PETR4</span><span class="asset-name">Petrobras PN</span></td>
+          <td>Commodities</td>
+          <td>8,9%</td>
+          <td class="ret-pos">+11,3%</td>
+          <td class="ret-pos">↑ Forte</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">KEPL3</span><span class="asset-name">Kepler Weber</span></td>
+          <td>Commodities</td>
+          <td>5,2%</td>
+          <td class="ret-pos">+1,4%</td>
+          <td class="ret-pos">↑ Positivo</td>
+          <td><span class="pill pill-watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">BPAC11</span><span class="asset-name">BTG Pactual</span></td>
+          <td>Financeiro</td>
+          <td>9,1%</td>
+          <td class="ret-pos">+6,8%</td>
+          <td class="ret-pos">↑ Forte</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">TOTS3</span><span class="asset-name">Totvs S.A.</span></td>
+          <td>Financeiro/Digital</td>
+          <td>5,0%</td>
+          <td class="ret-neg">−2,1%</td>
+          <td class="ret-neg">↓ Fraco</td>
+          <td><span class="pill pill-watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">ROXO34</span><span class="asset-name">Nu Holdings BDR</span></td>
+          <td>Financeiro/Digital</td>
+          <td>7,8%</td>
+          <td class="ret-pos">+14,2%</td>
+          <td class="ret-pos">↑ Forte</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">INBR32</span><span class="asset-name">ING Groep BDR</span></td>
+          <td>Financeiro/Digital</td>
+          <td>4,8%</td>
+          <td class="ret-neg">−0,9%</td>
+          <td class="ret-pos">↑ Neutro</td>
+          <td><span class="pill pill-watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td><span class="ticker">AZZA3</span><span class="asset-name">Azzas 2154</span></td>
+          <td>Consumo</td>
+          <td>5,9%</td>
+          <td class="ret-neg">−1,6%</td>
+          <td class="ret-neg">↓ Fraco</td>
+          <td><span class="pill pill-hold">Hold</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RESUMO + STATS -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Resumo — Janeiro · Fevereiro 2026</div>
+    <div class="resumo-grid">
+      <div class="resumo-mes">
+        <p>
+          O Itaúba encerrou os dois primeiros meses de 2026 com retorno acumulado de <strong>+8,48%</strong>,
+          contra <strong>+17,60%</strong> do IBOV no mesmo período — alpha negativo de 9,12 pontos percentuais,
+          dentro do esperado para uma estratégia estruturalmente defensiva.
+        </p>
+        <p>
+          Os principais contribuidores foram GMAT3 (+27%), ROXO34 (+14,2%) e PETR4 (+11,3%),
+          impulsionado pelo fechamento do Estreito de Ormuz e alta do petróleo após a Operação Epic Fury
+          em 28 de fevereiro. O pilar de energia foi o que mais pesou negativamente via EGIE3 e ENEV3.
+        </p>
+        <p>
+          A posição em AZZA3 permanece no portfólio por tese — P/L atual ~7x versus histórico de 70x —
+          aguardando recuperação do ciclo de consumo. TOTS3 e INBR32 entram em zona de atenção
+          para o rebalanceamento de março.
+        </p>
+      </div>
+      <div class="resumo-stats">
+        <div class="stat-row">
+          <span class="stat-key">Capital Inicial</span>
+          <span class="stat-val">R$ 100.000</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Patrimônio Atual</span>
+          <span class="stat-val">R$ 108.480</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Retorno Acumulado</span>
+          <span class="stat-val pos">+8,48%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">IBOV no Período</span>
+          <span class="stat-val pos">+17,60%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Alpha</span>
+          <span class="stat-val neg">−9,12 p.p.</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Drawdown Máximo</span>
+          <span class="stat-val neg">−3,2%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Volatilidade Anualizada</span>
+          <span class="stat-val">14,3%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Nº de Ativos</span>
+          <span class="stat-val">13</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Benchmark</span>
+          <span class="stat-val">IBOV</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Início</span>
+          <span class="stat-val">Jan 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG DE OPERAÇÕES -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Log de Operações</div>
+    <div class="log-list">
+      <div class="log-item">
+        <span class="log-date">Jan 2026</span>
+        <span class="log-type entrada">Entrada</span>
+        <div>
+          <span class="log-desc">Montagem da carteira v1 — 13 ativos, 5 pilares</span>
+          <span class="log-motivo">Estratégia Inverse Volatility calibrada em 2025. Capital inicial R$ 100.000.</span>
+        </div>
+        <span class="log-result neutral">—</span>
+      </div>
+      <div class="log-item">
+        <span class="log-date">Fev 2026</span>
+        <span class="log-type saida">Saída</span>
+        <div>
+          <span class="log-desc">NEOE3 → EQTL3</span>
+          <span class="log-motivo">OPA da Neoenergia sem upside residual. Equatorial como substituta estrutural no pilar energia.</span>
+        </div>
+        <span class="log-result neg">−0,4%</span>
+      </div>
+      <div class="log-item">
+        <span class="log-date">Fev 2026</span>
+        <span class="log-type rebal">Revisão</span>
+        <div>
+          <span class="log-desc">Filtro Momentum 12-1 aplicado — v2</span>
+          <span class="log-motivo">EGIE3 e TOTS3 com momentum negativo: peso reduzido à metade. PETR4 e GMAT3 reforçados.</span>
+        </div>
+        <span class="log-result neutral">Rebal.</span>
+      </div>
+      <div class="log-item">
+        <span class="log-date">Fev 2026</span>
+        <span class="log-type entrada">Tese</span>
+        <div>
+          <span class="log-desc">PETR4 — catalisador geopolítico</span>
+          <span class="log-motivo">Operação Epic Fury (28/02). Ormuz fechado. Petróleo +7%. P/L ~6x, yield ~14%. Posição mantida.</span>
+        </div>
+        <span class="log-result pos">+11,3%</span>
+      </div>
+      <div class="log-item">
+        <span class="log-date">Mar 2026</span>
+        <span class="log-type rebal">Pendente</span>
+        <div>
+          <span class="log-desc">Rebalanceamento mensal — Cumaru e Itaúba</span>
+          <span class="log-motivo">Avaliar saída de TOTS3 e INBR32. Manter AZZA3 por tese de valuation. Novo filtro momentum.</span>
+        </div>
+        <span class="log-result neutral">—</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Wood Capital · Itaúba</div>
+  <div class="footer-note">
+    Portfólio hipotético e educacional. Não constitui recomendação de investimento.<br>
+    A análise é pública porque a verdade não tem dono.
+  </div>
+</footer>
+
+<script>
+  // ── DADOS ──
+  const labels = ['Jan', 'Fev'];
+  const itauba = [100, 104.2, 108.48];
+  const ibov   = [100, 108.5, 117.60];
+  const labelsDD = ['Jan', 'Fev'];
+  const ddItauba = [0, -3.2, -1.1];
+  const ddIbov   = [0, -1.8, -0.4];
+
+  const labelsAll = ['Início', 'Jan', 'Fev'];
+
+  const baseOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: true, position: 'bottom', labels: { font: { family: 'DM Mono', size: 10 }, color: '#6B7280', boxWidth: 12, padding: 16 } }, tooltip: { mode: 'index', intersect: false, backgroundColor: '#0D1B2A', titleFont: { family: 'DM Mono', size: 10 }, bodyFont: { family: 'DM Mono', size: 10 }, padding: 10, borderColor: '#1A2E42', borderWidth: 1 } },
+    scales: {
+      x: { grid: { color: '#E8E4DA', lineWidth: 0.5 }, ticks: { font: { family: 'DM Mono', size: 9 }, color: '#6B7280' } },
+      y: { grid: { color: '#E8E4DA', lineWidth: 0.5 }, ticks: { font: { family: 'DM Mono', size: 9 }, color: '#6B7280' } }
+    }
+  };
+
+  // Patrimônio
+  new Chart(document.getElementById('chartPatrimonio'), {
+    type: 'line',
+    data: {
+      labels: labelsAll,
+      datasets: [
+        { label: 'Itaúba', data: itauba, borderColor: '#1a6b4a', backgroundColor: 'rgba(26,107,74,0.06)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#1a6b4a', tension: 0.3, fill: true },
+        { label: 'IBOV', data: ibov, borderColor: '#c0392b', backgroundColor: 'rgba(192,57,43,0.04)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c0392b', tension: 0.3, fill: true }
+      ]
+    },
+    options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, ticks: { ...baseOptions.scales.y.ticks, callback: v => v.toFixed(0) } } } }
+  });
+
+  // Drawdown
+  new Chart(document.getElementById('chartDrawdown'), {
+    type: 'line',
+    data: {
+      labels: labelsAll,
+      datasets: [
+        { label: 'Itaúba DD', data: ddItauba, borderColor: '#1a6b4a', backgroundColor: 'rgba(26,107,74,0.08)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#1a6b4a', tension: 0.3, fill: true },
+        { label: 'IBOV DD', data: ddIbov, borderColor: '#c0392b', backgroundColor: 'rgba(192,57,43,0.05)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c0392b', tension: 0.3, fill: true }
+      ]
+    },
+    options: { ...baseOptions, scales: { ...baseOptions.scales, y: { ...baseOptions.scales.y, ticks: { ...baseOptions.scales.y.ticks, callback: v => v.toFixed(1) + '%' } } } }
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cumaru — Wood Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:     #0D1B2A;
+      --navy-mid: #1A2E42;
+      --white:    #FAFAF7;
+      --cream:    #F0EBE0;
+      --wood:     #8B6914;
+      --wood-lt:  #B8932A;
+      --gray:     #6B7280;
+      --gray-lt:  #E8E4DA;
+      --green:    #1a6b4a;
+      --red:      #c0392b;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --mono:     'DM Mono', monospace;
+      --sans:     'Outfit', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--white);
+      color: var(--navy);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(250,250,247,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-lt);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--navy); }
+    .nav-back::before { content: '←'; font-size: 0.8rem; }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .nav-fund-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--navy);
+    }
+
+    .nav-fund-sub {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--wood);
+    }
+
+    .nav-date {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    /* ── HERO HEADER ── */
+    .fund-header {
+      margin-top: 68px;
+      background: var(--navy-mid);
+      padding: 3.5rem 3rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fund-header::after {
+      content: 'INÍCIO · MAR 2026';
+      position: absolute;
+      top: 2rem;
+      right: 3rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(250,250,247,0.15);
+    }
+
+    .fund-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood-lt);
+      margin-bottom: 0.75rem;
+    }
+
+    .fund-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .fund-strategy {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(250,250,247,0.5);
+    }
+
+    .fund-kpis {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .kpi { text-align: right; }
+
+    .kpi-value {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .kpi-value.pos     { color: #4ade80; }
+    .kpi-value.neutral { color: var(--white); }
+    .kpi-value.pending { color: rgba(250,250,247,0.35); font-size: 1rem; padding-top: 0.3rem; letter-spacing: 0.05em; }
+
+    .kpi-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(250,250,247,0.4);
+      margin-top: 0.25rem;
+    }
+
+    /* ── BANNER INÍCIO ── */
+    .banner-inicio {
+      background: var(--cream);
+      border-left: 3px solid var(--wood);
+      padding: 1.25rem 2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .banner-icon {
+      font-family: var(--mono);
+      font-size: 1.4rem;
+      color: var(--wood);
+      line-height: 1;
+    }
+
+    .banner-text {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--navy);
+      line-height: 1.6;
+    }
+
+    .banner-text strong { font-weight: 600; }
+
+    /* ── MAIN GRID ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 3rem 6rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid-full { margin-bottom: 1.5rem; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-lt);
+      padding: 2rem;
+    }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--wood);
+    }
+
+    /* ── PLACEHOLDER CHART ── */
+    .chart-placeholder {
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed var(--gray-lt);
+      gap: 0.75rem;
+    }
+
+    .chart-placeholder-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-lt);
+    }
+
+    .chart-placeholder-sub {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--gray-lt);
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+
+    /* ── METODOLOGIA ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .method-item {
+      border-left: 2px solid var(--gray-lt);
+      padding-left: 1.25rem;
+    }
+
+    .method-num {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--wood-lt);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+
+    .method-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .method-desc {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* ── TABELA ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    thead tr { border-bottom: 1px solid var(--navy); }
+
+    thead th {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.58rem;
+      color: var(--gray);
+    }
+
+    thead th:not(:first-child) { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--gray-lt);
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: var(--cream); }
+
+    tbody td { padding: 0.75rem; color: var(--navy); }
+    tbody td:not(:first-child) { text-align: right; }
+
+    .ticker { font-weight: 400; letter-spacing: 0.05em; }
+
+    .asset-name {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    .pill-novo   { background: #e8eef5; color: #1a3a6b; }
+    .pill-hold   { background: #e8f5ee; color: #1a6b4a; }
+    .pill-pending { background: #f5f5f5; color: #9ca3af; }
+
+    .ret-pos  { color: var(--green); }
+    .ret-neg  { color: var(--red); }
+    .ret-nd   { color: var(--gray-lt); }
+
+    /* ── LOG ── */
+    .log-list { display: flex; flex-direction: column; }
+
+    .log-item {
+      display: grid;
+      grid-template-columns: 90px 70px 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .log-item:last-child { border-bottom: none; }
+    .log-date { color: var(--gray); font-size: 0.62rem; }
+
+    .log-type {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      text-align: center;
+    }
+
+    .log-type.entrada  { background: #e8f5ee; color: #1a6b4a; }
+    .log-type.pendente { background: #fef9e7; color: #8B6914; }
+
+    .log-desc  { color: var(--navy); font-family: var(--sans); font-size: 0.78rem; }
+    .log-motivo { color: var(--gray); font-size: 0.65rem; display: block; margin-top: 0.1rem; }
+    .log-result { font-size: 0.7rem; text-align: right; color: var(--gray); }
+
+    /* ── RESUMO ── */
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .resumo-mes {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--navy);
+    }
+
+    .resumo-mes p { margin-bottom: 1rem; }
+
+    .resumo-stats { display: flex; flex-direction: column; gap: 0; }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+    .stat-key { color: var(--gray); letter-spacing: 0.05em; }
+    .stat-val { font-weight: 400; color: var(--navy); }
+    .stat-val.pending { color: var(--gray-lt); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: rgba(250,250,247,0.3);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ── ANIMATE ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .grid-2        { grid-template-columns: 1fr; }
+      .method-grid   { grid-template-columns: 1fr; }
+      .fund-header   { grid-template-columns: 1fr; }
+      .fund-kpis     { justify-content: flex-start; }
+      .kpi           { text-align: left; }
+      .resumo-grid   { grid-template-columns: 1fr; }
+      .log-item      { grid-template-columns: 80px 60px 1fr; }
+      .log-result    { display: none; }
+      nav            { padding: 1rem 1.5rem; }
+      .main          { padding: 2rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back">Wood Capital</a>
+  <div class="nav-title">
+    <span class="nav-fund-name">Cumaru</span>
+    <span class="nav-fund-sub">Fundo Fator · Momentum Puro 12-1</span>
+  </div>
+  <span class="nav-date">Ref. Mar 2026</span>
+</nav>
+
+<!-- HEADER -->
+<div class="fund-header">
+  <div>
+    <div class="fund-label">Fundo Fator · Wood Capital</div>
+    <h1 class="fund-title">Cumaru</h1>
+    <p class="fund-strategy">Momentum 12-1 · Top 2 por setor IBOV · Inverse Volatility</p>
+  </div>
+  <div class="fund-kpis">
+    <div class="kpi">
+      <div class="kpi-value neutral">R$ 100.000</div>
+      <div class="kpi-label">Capital Inicial</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value pending">em andamento</div>
+      <div class="kpi-label">Retorno Acum.</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value pending">Mar 2026</div>
+      <div class="kpi-label">Início</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- BANNER INÍCIO -->
+  <div class="banner-inicio fade-in">
+    <div class="banner-icon">◎</div>
+    <div class="banner-text">
+      <strong>Cumaru iniciou em março de 2026.</strong> Este dashboard será atualizado mensalmente
+      com os dados reais de performance, rebalanceamento e composição da carteira.
+      Os gráficos de curva e drawdown serão preenchidos conforme o histórico se constrói.
+    </div>
+  </div>
+
+  <!-- CURVA + DRAWDOWN (placeholder) -->
+  <div class="grid-2">
+    <div class="card fade-in">
+      <div class="card-label">Patrimônio vs IBOV</div>
+      <div class="chart-placeholder">
+        <div class="chart-placeholder-label">Histórico insuficiente</div>
+        <div class="chart-placeholder-sub">Disponível a partir de Abr 2026</div>
+      </div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-label">Drawdown</div>
+      <div class="chart-placeholder">
+        <div class="chart-placeholder-label">Histórico insuficiente</div>
+        <div class="chart-placeholder-sub">Disponível a partir de Abr 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METODOLOGIA -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Metodologia</div>
+    <div class="method-grid">
+      <div class="method-item">
+        <div class="method-num">01</div>
+        <div class="method-title">Universo</div>
+        <div class="method-desc">Todos os ativos do IBOV (~70 empresas), organizados por setor. A seleção parte do índice para capturar o mercado relevante sem viés de escolha manual.</div>
+      </div>
+      <div class="method-item">
+        <div class="method-num">02</div>
+        <div class="method-title">Filtro Momentum 12-1</div>
+        <div class="method-desc">Retorno entre t-12m e t-1m como sinal de direção. Apenas ativos com momentum positivo entram. Os 2 de maior momentum por setor são selecionados mensalmente.</div>
+      </div>
+      <div class="method-item">
+        <div class="method-num">03</div>
+        <div class="method-title">Pesos Inverse Volatility</div>
+        <div class="method-desc">Ativos mais estáveis recebem maior alocação dentro da carteira selecionada. Rebalanceamento mensal automático. Stop loss em −2× volatilidade anualizada.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA CARTEIRA MARÇO 2026 -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Carteira — Março 2026 · 38 ativos · Seleção momentum real</div>
+        <table>
+      <thead>
+        <tr>
+          <th>Setor</th>
+          <th>Ticker</th>
+          <th>Peso %</th>
+          <th>Score Mom %</th>
+          <th>Preço Entrada</th>
+          <th>Cotas</th>
+          <th>Valor Alocado</th>
+          <th>Stop %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Papel e Celulose</td><td class="ticker">KLBN11</td><td>3.84%</td><td class="ret-pos">8.02</td><td>20.61</td><td>186.3574</td><td>R$ 3.840,83</td><td class="ret-neg">−43.16%</td></tr>
+        <tr><td>Alimentos</td><td class="ticker">ABEV3</td><td>3.74%</td><td class="ret-pos">33.98</td><td>12.25</td><td>24.9816</td><td>R$ 3.738,56</td><td class="ret-neg">−44.34%</td></tr>
+        <tr><td>Energia Elétrica</td><td class="ticker">NEOE3</td><td>3.63%</td><td class="ret-pos">76.69</td><td>32.85</td><td>110.3841</td><td>R$ 3.626,12</td><td class="ret-neg">−45.72%</td></tr>
+        <tr><td>Shoppings</td><td class="ticker">MULT3</td><td>3.54%</td><td class="ret-pos">64.70</td><td>34.11</td><td>103.6709</td><td>R$ 3.536,21</td><td class="ret-neg">−46.88%</td></tr>
+        <tr><td>Telecom</td><td class="ticker">VIVT3</td><td>3.47%</td><td class="ret-pos">58.54</td><td>42.26</td><td>82.1277</td><td>R$ 3.470,72</td><td class="ret-neg">−47.76%</td></tr>
+        <tr><td>Mineração</td><td class="ticker">VALE3</td><td>3.45%</td><td class="ret-pos">72.69</td><td>88.16</td><td>39.1167</td><td>R$ 3.448,53</td><td class="ret-neg">−48.07%</td></tr>
+        <tr><td>Seguros</td><td class="ticker">PSSA3</td><td>3.36%</td><td class="ret-pos">42.57</td><td>51.81</td><td>64.8166</td><td>R$ 3.358,15</td><td class="ret-neg">−49.36%</td></tr>
+        <tr><td>Energia Elétrica</td><td class="ticker">ENGI11</td><td>3.28%</td><td class="ret-pos">52.25</td><td>53.54</td><td>61.3229</td><td>R$ 3.283,23</td><td class="ret-neg">−50.49%</td></tr>
+        <tr><td>Agro/Insumos</td><td class="ticker">RANI3</td><td>3.26%</td><td class="ret-pos">38.54</td><td>9.89</td><td>329.3356</td><td>R$ 3.257,13</td><td class="ret-neg">−50.90%</td></tr>
+        <tr><td>Shoppings</td><td class="ticker">IGTI11</td><td>3.22%</td><td class="ret-pos">68.14</td><td>28.94</td><td>111.2292</td><td>R$ 3.218,97</td><td class="ret-neg">−51.50%</td></tr>
+        <tr><td>Telecom</td><td class="ticker">TIMS3</td><td>3.21%</td><td class="ret-pos">70.66</td><td>27.30</td><td>117.6182</td><td>R$ 3.210,98</td><td class="ret-neg">−51.63%</td></tr>
+        <tr><td>Utilidades</td><td class="ticker">SAPR11</td><td>3.20%</td><td class="ret-pos">76.70</td><td>44.99</td><td>71.2313</td><td>R$ 3.204,70</td><td class="ret-neg">−51.73%</td></tr>
+        <tr><td>Siderurgia</td><td class="ticker">GGBR4</td><td>3.01%</td><td class="ret-pos">40.09</td><td>20.80</td><td>144.8649</td><td>R$ 3.013,19</td><td class="ret-neg">−55.02%</td></tr>
+        <tr><td>Siderurgia</td><td class="ticker">GOAU4</td><td>2.98%</td><td class="ret-pos">51.17</td><td>9.27</td><td>321.4548</td><td>R$ 2.979,89</td><td class="ret-neg">−55.63%</td></tr>
+        <tr><td>Petróleo e Gás</td><td class="ticker">ENEV3</td><td>2.95%</td><td class="ret-pos">79.49</td><td>21.28</td><td>138.6492</td><td>R$ 2.950,46</td><td class="ret-neg">−56.19%</td></tr>
+        <tr><td>Bancos</td><td class="ticker">BBDC4</td><td>2.92%</td><td class="ret-pos">105.31</td><td>21.21</td><td>137.6666</td><td>R$ 2.920,05</td><td class="ret-neg">−56.77%</td></tr>
+        <tr><td>Utilidades</td><td class="ticker">CSMG3</td><td>2.86%</td><td class="ret-pos">144.03</td><td>55.34</td><td>51.6839</td><td>R$ 2.860,19</td><td class="ret-neg">−57.96%</td></tr>
+        <tr><td>Saúde</td><td class="ticker">RDOR3</td><td>2.86%</td><td class="ret-pos">80.06</td><td>39.70</td><td>72.0395</td><td>R$ 2.859,97</td><td class="ret-neg">−57.96%</td></tr>
+        <tr><td>Saúde</td><td class="ticker">FLRY3</td><td>2.82%</td><td class="ret-pos">67.04</td><td>16.90</td><td>166.5784</td><td>R$ 2.815,17</td><td class="ret-neg">−58.89%</td></tr>
+        <tr><td>Bancos</td><td class="ticker">BPAC11</td><td>2.78%</td><td class="ret-pos">96.63</td><td>61.09</td><td>45.5549</td><td>R$ 2.782,95</td><td class="ret-neg">−59.57%</td></tr>
+        <tr><td>Tecnologia</td><td class="ticker">TOTS3</td><td>2.77%</td><td class="ret-pos">31.81</td><td>37.33</td><td>74.1973</td><td>R$ 2.769,79</td><td class="ret-neg">−59.85%</td></tr>
+        <tr><td>Indústria</td><td class="ticker">WEGE3</td><td>2.70%</td><td class="ret-pos">14.28</td><td>48.69</td><td>55.4954</td><td>R$ 2.702,07</td><td class="ret-neg">−61.35%</td></tr>
+        <tr><td>Construção Civil</td><td class="ticker">DIRR3</td><td>2.56%</td><td class="ret-pos">74.50</td><td>16.00</td><td>160.2961</td><td>R$ 2.564,74</td><td class="ret-neg">−64.64%</td></tr>
+        <tr><td>Petróleo e Gás</td><td class="ticker">PRIO3</td><td>2.47%</td><td class="ret-pos">36.15</td><td>57.28</td><td>43.1735</td><td>R$ 2.472,98</td><td class="ret-neg">−67.03%</td></tr>
+        <tr><td>Agro/Insumos</td><td class="ticker">KEPL3</td><td>2.44%</td><td class="ret-pos">48.50</td><td>9.63</td><td>253.3431</td><td>R$ 2.439,69</td><td class="ret-neg">−67.95%</td></tr>
+        <tr><td>Mineração</td><td class="ticker">CMIN3</td><td>2.39%</td><td class="ret-pos">23.28</td><td>5.46</td><td>437.2774</td><td>R$ 2.387,53</td><td class="ret-neg">−69.43%</td></tr>
+        <tr><td>Seguros</td><td class="ticker">IRBR3</td><td>2.11%</td><td class="ret-pos">26.79</td><td>61.28</td><td>34.3621</td><td>R$ 2.105,71</td><td class="ret-neg">−78.73%</td></tr>
+        <tr><td>Fintechs</td><td class="ticker">INBR32</td><td>2.09%</td><td class="ret-pos">55.60</td><td>45.85</td><td>45.6215</td><td>R$ 2.091,75</td><td class="ret-neg">−79.25%</td></tr>
+        <tr><td>Varejo</td><td class="ticker">LREN3</td><td>2.07%</td><td class="ret-pos">42.10</td><td>15.52</td><td>133.4809</td><td>R$ 2.071,62</td><td class="ret-neg">−80.02%</td></tr>
+        <tr><td>Fintechs</td><td class="ticker">ROXO34</td><td>2.02%</td><td class="ret-pos">54.47</td><td>13.17</td><td>153.7197</td><td>R$ 2.024,49</td><td class="ret-neg">−81.88%</td></tr>
+        <tr><td>Logística</td><td class="ticker">ECOR3</td><td>1.99%</td><td class="ret-pos">138.86</td><td>10.63</td><td>187.5432</td><td>R$ 1.993,58</td><td class="ret-neg">−83.15%</td></tr>
+        <tr><td>Alimentos</td><td class="ticker">BEEF3</td><td>1.88%</td><td class="ret-pos">38.19</td><td>5.10</td><td>368.6046</td><td>R$ 1.879,88</td><td class="ret-neg">−88.18%</td></tr>
+        <tr><td>Distribuição</td><td class="ticker">ASAI3</td><td>1.86%</td><td class="ret-pos">33.94</td><td>9.25</td><td>201.1961</td><td>R$ 1.861,06</td><td class="ret-neg">−89.07%</td></tr>
+        <tr><td>Construção Civil</td><td class="ticker">MRVE3</td><td>1.80%</td><td class="ret-pos">84.82</td><td>10.01</td><td>180.2247</td><td>R$ 1.804,05</td><td class="ret-neg">−91.89%</td></tr>
+        <tr><td>Tecnologia</td><td class="ticker">LWSA3</td><td>1.76%</td><td class="ret-pos">89.15</td><td>3.53</td><td>499.8258</td><td>R$ 1.764,38</td><td class="ret-neg">−93.95%</td></tr>
+        <tr><td>Distribuição</td><td class="ticker">PCAR3</td><td>1.37%</td><td class="ret-pos">53.20</td><td>3.15</td><td>434.0830</td><td>R$ 1.367,36</td><td class="ret-neg">−121.24%</td></tr>
+        <tr><td>Varejo</td><td class="ticker">MGLU3</td><td>1.32%</td><td class="ret-pos">46.04</td><td>9.19</td><td>143.9968</td><td>R$ 1.323,33</td><td class="ret-neg">−125.27%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RESUMO + STATS -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Resumo — Março 2026 · Abertura</div>
+    <div class="resumo-grid">
+      <div class="resumo-mes">
+        <p>
+          O Cumaru é o segundo fundo da Wood Capital, com foco em <strong>fator puro de momentum</strong>.
+          Enquanto o Itaúba opera uma carteira estrutural e fundamentalista com rebalanceamento semestral,
+          o Cumaru é sistemático e mensal — o mercado fala, e a carteira responde.
+        </p>
+        <p>
+          A seleção de março priorizou setores com momentum forte em função do ambiente geopolítico:
+          petróleo e gás (PETR4, PRIO3) como beneficiários diretos do fechamento de Ormuz,
+          financeiro (BPAC11, ITUB4) pelo ciclo de juros altos, e mineração (VALE3) pela
+          demanda estrutural de cobre em reconstrução pós-conflito.
+        </p>
+        <p>
+          Os dados de retorno serão atualizados ao final de março. O primeiro relatório completo
+          — com curva vs IBOV, drawdown e análise de alpha — será publicado em abril de 2026.
+        </p>
+      </div>
+      <div class="resumo-stats">
+        <div class="stat-row">
+          <span class="stat-key">Capital Inicial</span>
+          <span class="stat-val">R$ 100.000</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Início</span>
+          <span class="stat-val">Mar 2026</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Retorno Acumulado</span>
+          <span class="stat-val pending">em andamento</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Benchmark</span>
+          <span class="stat-val">IBOV</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Universo</span>
+          <span class="stat-val">~70 ativos IBOV</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Seleção por Setor</span>
+          <span class="stat-val">Top 2 momentum</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Pesos</span>
+          <span class="stat-val">Inverse Volatility</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Rebalanceamento</span>
+          <span class="stat-val">Mensal</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Stop Loss</span>
+          <span class="stat-val">−2× Vol. Anualizada</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Nº de Ativos</span>
+          <span class="stat-val">38</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG DE OPERAÇÕES -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Log de Operações</div>
+    <div class="log-list">
+      <div class="log-item">
+        <span class="log-date">Mar 2026</span>
+        <span class="log-type entrada">Abertura</span>
+        <div>
+          <span class="log-desc">Montagem da carteira inicial — 14 ativos, 7 setores</span>
+          <span class="log-motivo">Primeira seleção momentum 12-1 sobre universo IBOV. Capital R$ 100.000. Pesos inverse volatility calibrados.</span>
+        </div>
+        <span class="log-result">—</span>
+      </div>
+      <div class="log-item">
+        <span class="log-date">Abr 2026</span>
+        <span class="log-type pendente">Pendente</span>
+        <div>
+          <span class="log-desc">Rebalanceamento mensal — novo filtro momentum</span>
+          <span class="log-motivo">Revisar ativos com momentum deteriorado. Atualizar pesos. Publicar primeiro relatório completo.</span>
+        </div>
+        <span class="log-result">—</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Wood Capital · Cumaru</div>
+  <div class="footer-note">
+    Portfólio hipotético e educacional. Não constitui recomendação de investimento.<br>
+    A análise é pública porque a verdade não tem dono.
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
