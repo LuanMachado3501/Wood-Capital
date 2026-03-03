@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itaúba — Wood Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:     #0D1B2A;
+      --navy-mid: #1A2E42;
+      --white:    #FAFAF7;
+      --cream:    #F0EBE0;
+      --wood:     #8B6914;
+      --wood-lt:  #B8932A;
+      --gray:     #6B7280;
+      --gray-lt:  #E8E4DA;
+      --green:    #1a6b4a;
+      --red:      #c0392b;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --mono:     'DM Mono', monospace;
+      --sans:     'Outfit', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--white);
+      color: var(--navy);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(250,250,247,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-lt);
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--navy); }
+    .nav-back::before { content: '←'; font-size: 0.8rem; }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .nav-fund-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--navy);
+    }
+
+    .nav-fund-sub {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--wood);
+    }
+
+    .nav-date {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    /* ── HERO HEADER ── */
+    .fund-header {
+      margin-top: 68px;
+      background: var(--navy);
+      padding: 3.5rem 3rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: end;
+    }
+
+    .fund-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood-lt);
+      margin-bottom: 0.75rem;
+    }
+
+    .fund-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .fund-strategy {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(250,250,247,0.5);
+    }
+
+    .fund-kpis {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .kpi {
+      text-align: right;
+    }
+
+    .kpi-value {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .kpi-value.pos { color: #4ade80; }
+    .kpi-value.neg { color: #f87171; }
+    .kpi-value.neutral { color: var(--white); }
+
+    .kpi-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(250,250,247,0.4);
+      margin-top: 0.25rem;
+    }
+
+    /* ── MAIN GRID ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 3rem 6rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid-full {
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-lt);
+      padding: 2rem;
+    }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--wood);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--wood);
+    }
+
+    /* ── CHARTS ── */
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+
+    /* ── TABELA DE ATIVOS ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--navy);
+    }
+
+    thead th {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.58rem;
+      color: var(--gray);
+    }
+
+    thead th:not(:first-child) { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--gray-lt);
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: var(--cream); }
+
+    tbody td {
+      padding: 0.75rem;
+      color: var(--navy);
+    }
+
+    tbody td:not(:first-child) { text-align: right; }
+
+    .ticker {
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .asset-name {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    .pill-hold { background: #e8f5ee; color: #1a6b4a; }
+    .pill-watch { background: #fef9e7; color: #8B6914; }
+
+    .ret-pos { color: var(--green); }
+    .ret-neg { color: var(--red); }
+
+    /* ── LOG DE OPERAÇÕES ── */
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .log-item {
+      display: grid;
+      grid-template-columns: 90px 70px 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .log-item:last-child { border-bottom: none; }
+
+    .log-date { color: var(--gray); font-size: 0.62rem; }
+
+    .log-type {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      text-align: center;
+    }
+
+    .log-type.entrada { background: #e8f5ee; color: #1a6b4a; }
+    .log-type.saida   { background: #fde8e8; color: #c0392b; }
+    .log-type.rebal   { background: #e8eef5; color: #1a3a6b; }
+
+    .log-desc { color: var(--navy); font-family: var(--sans); font-size: 0.78rem; }
+    .log-motivo { color: var(--gray); font-size: 0.65rem; display: block; margin-top: 0.1rem; }
+
+    .log-result { font-size: 0.7rem; text-align: right; }
+
+    /* ── RESUMO DO MÊS ── */
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .resumo-mes {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: var(--navy);
+    }
+
+    .resumo-mes p { margin-bottom: 1rem; }
+
+    .resumo-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-lt);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+    .stat-key { color: var(--gray); letter-spacing: 0.05em; }
+    .stat-val { font-weight: 400; color: var(--navy); }
+    .stat-val.pos { color: var(--green); }
+    .stat-val.neg { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: rgba(250,250,247,0.3);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+
+    /* ── TABELA INTERATIVA ── */
+    thead th { cursor: pointer; user-select: none; }
+    thead th:hover { color: var(--navy); }
+    thead th.sort-asc::after  { content: ' ↑'; color: var(--wood); }
+    thead th.sort-desc::after { content: ' ↓'; color: var(--wood); }
+
+    .table-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .table-search {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      border: 1px solid var(--gray-lt);
+      padding: 0.4rem 0.75rem;
+      background: var(--white);
+      color: var(--navy);
+      outline: none;
+      letter-spacing: 0.05em;
+      width: 200px;
+    }
+    .table-search:focus { border-color: var(--wood-lt); }
+    .table-search::placeholder { color: var(--gray-lt); }
+
+    .table-info {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-left: auto;
+    }
+    .table-info span { color: var(--wood); font-weight: 400; }
+
+    /* ── GRÁFICO BARRAS ── */
+    .chart-wrap-tall { position: relative; height: 380px; }
+
+    /* ── ANIMATE ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .fund-header { grid-template-columns: 1fr; }
+      .fund-kpis { justify-content: flex-start; }
+      .kpi { text-align: left; }
+      .resumo-grid { grid-template-columns: 1fr; }
+      .log-item { grid-template-columns: 80px 60px 1fr; }
+      .log-result { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      .main { padding: 2rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back">Wood Capital</a>
+  <div class="nav-title">
+    <span class="nav-fund-name">Itaúba</span>
+    <span class="nav-fund-sub">Fundo Estrutural · Inverse Volatility + Momentum 12-1</span>
+  </div>
+  <span class="nav-date" id="nav-periodo">—</span>
+</nav>
+
+<!-- HEADER -->
+<div class="fund-header">
+  <div>
+    <div class="fund-label">Fundo Estrutural · Wood Capital</div>
+    <h1 class="fund-title">Itaúba</h1>
+    <p class="fund-strategy">Inverse Volatility Weighting + Filtro Momentum 12-1</p>
+  </div>
+  <div class="fund-kpis">
+    <div class="kpi">
+      <div id="kpi-retorno" class="kpi-value pos">—</div>
+      <div class="kpi-label">Retorno Acum.</div>
+    </div>
+    <div class="kpi">
+      <div id="kpi-alpha" class="kpi-value neg">—</div>
+      <div class="kpi-label">Alpha vs IBOV</div>
+    </div>
+    <div class="kpi">
+      <div id="kpi-patrim" class="kpi-value neutral">—</div>
+      <div class="kpi-label">Patrimônio</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- CURVA + DRAWDOWN -->
+  <div class="grid-2">
+    <div class="card fade-in">
+      <div class="card-label">Patrimônio vs IBOV</div>
+      <div class="chart-wrap">
+        <canvas id="chartPatrimonio"></canvas>
+      </div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-label">Drawdown</div>
+      <div class="chart-wrap">
+        <canvas id="chartDrawdown"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA DE ATIVOS -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Carteira atual — 13 ativos · 5 pilares</div>
+    <div class="table-controls">
+      <input class="table-search" id="tableSearch" placeholder="Buscar ativo ou pilar..." type="text">
+      <div class="table-info">
+        <span id="countAtivos">13</span> ativos · <span id="countPilares">—</span> pilares
+      </div>
+    </div>
+    <table id="carteiraTable">
+      <thead>
+        <tr>
+          <th data-col="0">Ativo</th>
+          <th data-col="1">Pilar</th>
+          <th data-col="2">Peso %</th>
+          <th data-col="3">Momentum 12-1</th>
+          <th data-col="4">Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+
+  <!-- RETORNO POR PILAR -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Retorno por Pilar — Jan·Fev 2026</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chartPilar"></canvas>
+    </div>
+  </div>
+
+  <!-- PIZZA POR PILAR -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Concentração por Pilar</div>
+    <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:2rem; align-items:center;">
+      <div style="position:relative; height:280px;">
+        <canvas id="chartPizza"></canvas>
+      </div>
+      <div id="legendaPilar" style="display:flex; flex-direction:column; gap:0.5rem;"></div>
+    </div>
+  </div>
+
+  <!-- RESUMO + STATS -->
+  <div class="card grid-full fade-in">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.5rem;">
+      <div class="card-label" style="margin-bottom:0;">Carta Mensal</div>
+      <span style="font-family:var(--mono); font-size:0.6rem; color:var(--gray);" id="carta-data">—</span>
+    </div>
+    <div style="font-family:var(--serif); font-size:1.4rem; font-weight:300; color:var(--navy); margin-bottom:1.5rem;" id="carta-titulo">—</div>
+    <div class="resumo-grid">
+      <div class="resumo-mes" id="carta-body" style="font-family:var(--sans); font-size:0.92rem; line-height:1.85; color:var(--navy);">
+        <p>Carregando carta mensal...</p>
+      </div>
+      <div class="resumo-stats">
+        <div class="stat-row">
+          <span class="stat-key">Capital Inicial</span>
+          <span class="stat-val" id="stat-capital">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Patrimônio Atual</span>
+          <span class="stat-val" id="stat-patrim">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Retorno Acumulado</span>
+          <span class="stat-val pos" id="stat-retorno">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">IBOV no Período</span>
+          <span class="stat-val pos" id="stat-ibov">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Alpha</span>
+          <span class="stat-val neg" id="stat-alpha">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Drawdown Máximo</span>
+          <span class="stat-val neg" id="stat-dd">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Volatilidade Anualizada</span>
+          <span class="stat-val" id="stat-vol">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Nº de Ativos</span>
+          <span class="stat-val" id="stat-nativos">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Benchmark</span>
+          <span class="stat-val">IBOV</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-key">Início</span>
+          <span class="stat-val">Jan 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG DE OPERAÇÕES -->
+  <div class="card grid-full fade-in">
+    <div class="card-label">Log de Operações</div>
+    <div class="log-list" id="log-list"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Wood Capital · Itaúba</div>
+  <div class="footer-note">
+    Portfólio hipotético e educacional. Não constitui recomendação de investimento.<br>
+    A análise é pública porque a verdade não tem dono.
+  </div>
+</footer>
+
+<script>
+  // ── CARREGA JSON ──
+  async function init() {
+    let data;
+    try {
+      const res = await fetch('itauba_data.json');
+      data = await res.json();
+    } catch(e) {
+      // fallback para desenvolvimento local sem servidor
+      console.warn('itauba_data.json não encontrado — usando dados de demonstração');
+      data = DEMO_DATA;
+    }
+    renderDashboard(data);
+  }
+
+  // ── DEMO DATA (usado se JSON não estiver disponível) ──
+  const DEMO_DATA = {
+    meta: {
+      fundo: "Itaúba", estrategia: "Inverse Volatility + Filtro Momentum 12-1",
+      capital_inicial: 100000, patrimonio_atual: 108480,
+      retorno_acumulado: 8.48, retorno_ibov: 17.60, alpha: -9.12,
+      drawdown_max: -3.2, volatilidade_anual: 14.3,
+      periodo_inicio: "2026-01-02", periodo_fim: "2026-02-28",
+      n_ativos: 13, benchmark: "IBOV"
+    },
+    curva: {
+      labels: ["Início","Jan/26","Fev/26"],
+      carteira: [100, 104.2, 108.48],
+      ibov: [100, 108.5, 117.60],
+      dd_carteira: [0, -3.2, -1.1],
+      dd_ibov: [0, -1.8, -0.4]
+    },
+    ativos: [
+      {ticker:"GMAT3",pilar:"Descentralização",status:"Hold",peso_final:9.2,retorno:27.0,vol_anual:38.1,momentum:12.4,mom_status:"Positivo",stop_pct:-76.2,stop_atingido:false},
+      {ticker:"WEGE3",pilar:"Energia",status:"Hold",peso_final:8.4,retorno:5.2,vol_anual:28.6,momentum:8.1,mom_status:"Positivo",stop_pct:-57.2,stop_atingido:false},
+      {ticker:"BPAC11",pilar:"Financeiro/Digital",status:"Hold",peso_final:9.1,retorno:6.8,vol_anual:29.4,momentum:22.1,mom_status:"Positivo",stop_pct:-58.8,stop_atingido:false},
+      {ticker:"ROXO34",pilar:"Financeiro/Digital",status:"Hold",peso_final:7.8,retorno:14.2,vol_anual:35.2,momentum:31.4,mom_status:"Positivo",stop_pct:-70.4,stop_atingido:false},
+      {ticker:"PETR4",pilar:"Commodities",status:"Hold",peso_final:8.9,retorno:11.3,vol_anual:31.8,momentum:9.2,mom_status:"Positivo",stop_pct:-63.6,stop_atingido:false},
+      {ticker:"VALE3",pilar:"Commodities",status:"Hold",peso_final:7.5,retorno:4.7,vol_anual:33.4,momentum:6.8,mom_status:"Positivo",stop_pct:-66.8,stop_atingido:false},
+      {ticker:"EQTL3",pilar:"Energia",status:"Hold",peso_final:6.3,retorno:2.1,vol_anual:26.2,momentum:5.4,mom_status:"Positivo",stop_pct:-52.4,stop_atingido:false},
+      {ticker:"ENEV3",pilar:"Energia",status:"Watch",peso_final:6.1,retorno:-3.4,vol_anual:34.8,momentum:4.2,mom_status:"Positivo",stop_pct:-69.6,stop_atingido:false},
+      {ticker:"EGIE3",pilar:"Energia",status:"Watch",peso_final:5.8,retorno:-1.8,vol_anual:22.4,momentum:-2.1,mom_status:"Negativo",stop_pct:-44.8,stop_atingido:false},
+      {ticker:"KEPL3",pilar:"Commodities",status:"Watch",peso_final:5.2,retorno:1.4,vol_anual:41.2,momentum:3.8,mom_status:"Positivo",stop_pct:-82.4,stop_atingido:false},
+      {ticker:"AZZA3",pilar:"Consumo",status:"Hold",peso_final:5.9,retorno:-1.6,vol_anual:38.6,momentum:-4.2,mom_status:"Negativo",stop_pct:-77.2,stop_atingido:false},
+      {ticker:"TOTS3",pilar:"Financeiro/Digital",status:"Watch",peso_final:5.0,retorno:-2.1,vol_anual:30.2,momentum:-1.8,mom_status:"Negativo",stop_pct:-60.4,stop_atingido:false},
+      {ticker:"INBR32",pilar:"Financeiro/Digital",status:"Watch",peso_final:4.8,retorno:-0.9,vol_anual:28.8,momentum:2.1,mom_status:"Positivo",stop_pct:-57.6,stop_atingido:false}
+    ],
+    pilares: [
+      {pilar:"Descentralização",retorno:2.48,peso:9.2},
+      {pilar:"Energia",retorno:0.12,peso:26.6},
+      {pilar:"Commodities",retorno:1.46,peso:21.6},
+      {pilar:"Financeiro/Digital",retorno:2.18,peso:26.7},
+      {pilar:"Consumo",retorno:-0.09,peso:5.9}
+    ],
+    log: [
+      {data:"Jan 2026",tipo:"Abertura",descricao:"Montagem da carteira v1 — 13 ativos, 5 pilares",motivo:"Estratégia Inverse Volatility calibrada em 2025. Capital inicial R$ 100.000.",resultado:"—"},
+      {data:"Fev 2026",tipo:"Saída",descricao:"NEOE3 → EQTL3",motivo:"OPA da Neoenergia sem upside residual. Equatorial como substituta estrutural no pilar energia.",resultado:"-0.4%"},
+      {data:"Fev 2026",tipo:"Revisão",descricao:"Filtro Momentum 12-1 aplicado — v2",motivo:"EGIE3 e TOTS3 com momentum negativo: peso reduzido à metade. PETR4 e GMAT3 reforçados.",resultado:"Rebal."},
+      {data:"Fev 2026",tipo:"Tese",descricao:"PETR4 — catalisador geopolítico",motivo:"Operação Epic Fury (28/02). Ormuz fechado. Petróleo +7%. P/L ~6x, yield ~14%. Posição mantida.",resultado:"+11.3%"},
+      {data:"Mar 2026",tipo:"Pendente",descricao:"Rebalanceamento mensal — Cumaru e Itaúba",motivo:"Avaliar saída de TOTS3 e INBR32. Manter AZZA3 por tese de valuation. Novo filtro momentum.",resultado:"—"}
+    ],
+    carta_mensal: {
+      titulo: "Fevereiro 2026 — O mercado leu Ormuz antes de nós",
+      data: "Mar 2026",
+      corpo: [
+        "PETR4 e GMAT3 foram os destaques do período, com contribuições que refletem teses estruturais — não apostas táticas. A alta do petróleo com o fechamento de Ormuz validou o posicionamento em Petrobras, que entrou no portfólio por P/L ~6x e yield ~14%, não por geopolítica.",
+        "O pilar de energia pesou negativamente via EGIE3 e ENEV3. A EGIE3 enfrenta pressão de juros altos e R$2bi em debêntures no horizonte — aguardamos o resultado do próximo trimestre antes de qualquer decisão. ENEV3 mantém tese intacta pela flexibilidade térmica, mas o risco ANEEL permanece monitorado.",
+        "AZZA3 é a posição mais questionada externamente. P/L atual ~7x contra histórico de 70x — o desconto é real e estrutural, não conjuntural. Mantemos por convicção de valuation, com horizonte de 24+ meses para o ciclo de consumo virar.",
+        "Alpha negativo de -9,12 p.p. no período está dentro do esperado para uma estratégia defensiva com foco em preservação de capital. O IBOV subiu 17,6% puxado por ativos de alto beta que intencionalmente não carregamos."
+      ]
+    }
+  };
+
+  function fmt(v, dec=2) { return v != null ? v.toFixed(dec) : '—'; }
+  function fmtR(v) {
+    if (v == null) return '—';
+    const s = v >= 0 ? '+' : '';
+    return `${s}${v.toFixed(2)}%`;
+  }
+  function cls(v) { return v >= 0 ? 'ret-pos' : 'ret-neg'; }
+
+  function renderDashboard(d) {
+    const m = d.meta;
+
+    // ── KPIs no header ──
+    document.getElementById('kpi-retorno').textContent  = fmtR(m.retorno_acumulado);
+    document.getElementById('kpi-retorno').className    = 'kpi-value ' + (m.retorno_acumulado >= 0 ? 'pos' : 'neg');
+    document.getElementById('kpi-alpha').textContent    = fmtR(m.alpha);
+    document.getElementById('kpi-alpha').className      = 'kpi-value ' + (m.alpha >= 0 ? 'pos' : 'neg');
+    document.getElementById('kpi-patrim').textContent   = `R$ ${m.patrimonio_atual.toLocaleString('pt-BR', {minimumFractionDigits:0})}`;
+
+    // ── Nav data ──
+    document.getElementById('nav-periodo').textContent  = `Ref. ${m.periodo_fim}`;
+
+    // ── Curva patrimônio ──
+    const baseOpts = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { font:{family:'DM Mono',size:10}, color:'#6B7280', boxWidth:12, padding:16 } },
+        tooltip: { mode:'index', intersect:false, backgroundColor:'#0D1B2A', titleFont:{family:'DM Mono',size:10}, bodyFont:{family:'DM Mono',size:10}, padding:10, borderColor:'#1A2E42', borderWidth:1 }
+      },
+      scales: {
+        x: { grid:{color:'#E8E4DA',lineWidth:0.5}, ticks:{font:{family:'DM Mono',size:9},color:'#6B7280'} },
+        y: { grid:{color:'#E8E4DA',lineWidth:0.5}, ticks:{font:{family:'DM Mono',size:9},color:'#6B7280'} }
+      }
+    };
+
+    new Chart(document.getElementById('chartPatrimonio'), {
+      type: 'line',
+      data: {
+        labels: d.curva.labels,
+        datasets: [
+          { label:'Itaúba', data:d.curva.carteira, borderColor:'#1a6b4a', backgroundColor:'rgba(26,107,74,0.06)', borderWidth:2, pointRadius:4, pointBackgroundColor:'#1a6b4a', tension:0.3, fill:true },
+          { label:'IBOV',   data:d.curva.ibov,     borderColor:'#c0392b', backgroundColor:'rgba(192,57,43,0.04)', borderWidth:2, pointRadius:4, pointBackgroundColor:'#c0392b', tension:0.3, fill:true }
+        ]
+      },
+      options: { ...baseOpts }
+    });
+
+    new Chart(document.getElementById('chartDrawdown'), {
+      type: 'line',
+      data: {
+        labels: d.curva.labels,
+        datasets: [
+          { label:'Itaúba DD', data:d.curva.dd_carteira, borderColor:'#1a6b4a', backgroundColor:'rgba(26,107,74,0.08)', borderWidth:2, pointRadius:4, pointBackgroundColor:'#1a6b4a', tension:0.3, fill:true },
+          { label:'IBOV DD',   data:d.curva.dd_ibov,     borderColor:'#c0392b', backgroundColor:'rgba(192,57,43,0.05)', borderWidth:2, pointRadius:4, pointBackgroundColor:'#c0392b', tension:0.3, fill:true }
+        ]
+      },
+      options: { ...baseOpts, scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v.toFixed(1)+'%' } } } }
+    });
+
+    // ── Tabela de ativos ──
+    const tbody = document.querySelector('#carteiraTable tbody');
+    tbody.innerHTML = '';
+    d.ativos.forEach(a => {
+      const momSinal = a.mom_status === 'Positivo' ? '↑' : '↓';
+      const momCls   = a.mom_status === 'Positivo' ? 'ret-pos' : 'ret-neg';
+      const pillCls  = a.status === 'Hold' ? 'pill-hold' : 'pill-watch';
+      const momVal   = a.momentum != null ? `${momSinal} ${a.momentum >= 0 ? '+' : ''}${fmt(a.momentum)}%` : `${momSinal} —`;
+      tbody.innerHTML += `
+        <tr>
+          <td><span class="ticker">${a.ticker}</span></td>
+          <td>${a.pilar}</td>
+          <td>${fmt(a.peso_final)}%</td>
+          <td class="${momCls}">${momVal}</td>
+          <td><span class="pill ${pillCls}">${a.status}</span></td>
+        </tr>`;
+    });
+    updateCounts();
+
+    // ── Gráfico barras por pilar ──
+    const pilLabels = d.pilares.map(p => p.pilar);
+    const pilRets   = d.pilares.map(p => p.retorno);
+    const pilPesos  = d.pilares.map(p => p.peso);
+
+    new Chart(document.getElementById('chartPilar'), {
+      type: 'bar',
+      data: {
+        labels: pilLabels,
+        datasets: [
+          { label:'Retorno Ponderado %', data:pilRets,  backgroundColor:pilRets.map(v => v>=0?'rgba(26,107,74,0.75)':'rgba(192,57,43,0.75)'), borderColor:pilRets.map(v=>v>=0?'#1a6b4a':'#c0392b'), borderWidth:1, borderRadius:2, yAxisID:'yRet' },
+          { label:'Peso na Carteira %',  data:pilPesos, backgroundColor:'rgba(139,105,20,0.25)', borderColor:'#8B6914', borderWidth:1.5, borderRadius:2, yAxisID:'yPeso' }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false, indexAxis:'y',
+        plugins: {
+          legend:{ display:true, position:'bottom', labels:{font:{family:'DM Mono',size:10},color:'#6B7280',boxWidth:12,padding:16} },
+          tooltip:{ backgroundColor:'#0D1B2A', titleFont:{family:'DM Mono',size:10}, bodyFont:{family:'DM Mono',size:10}, padding:10, callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)}%`} }
+        },
+        scales: {
+          x:{ display:false },
+          yRet:{ type:'linear', position:'right', grid:{color:'#E8E4DA'}, ticks:{font:{family:'DM Mono',size:9},color:'#6B7280',callback:v=>v+'%'} },
+          yPeso:{ type:'linear', position:'left', grid:{drawOnChartArea:false}, ticks:{font:{family:'DM Mono',size:9},color:'#8B6914',callback:v=>v+'%'} },
+          y:{ grid:{color:'#E8E4DA'}, ticks:{font:{family:'DM Mono',size:10},color:'#0D1B2A'} }
+        }
+      }
+    });
+
+    // ── Resumo stats ──
+    document.getElementById('stat-capital').textContent   = `R$ ${m.capital_inicial.toLocaleString('pt-BR')}`;
+    document.getElementById('stat-patrim').textContent    = `R$ ${m.patrimonio_atual.toLocaleString('pt-BR', {minimumFractionDigits:0})}`;
+    document.getElementById('stat-retorno').textContent   = fmtR(m.retorno_acumulado);
+    document.getElementById('stat-retorno').className     = 'stat-val ' + (m.retorno_acumulado >= 0 ? 'pos' : 'neg');
+    document.getElementById('stat-ibov').textContent      = fmtR(m.retorno_ibov);
+    document.getElementById('stat-ibov').className        = 'stat-val ' + (m.retorno_ibov >= 0 ? 'pos' : 'neg');
+    document.getElementById('stat-alpha').textContent     = fmtR(m.alpha);
+    document.getElementById('stat-alpha').className       = 'stat-val ' + (m.alpha >= 0 ? 'pos' : 'neg');
+    document.getElementById('stat-dd').textContent        = fmtR(m.drawdown_max);
+    document.getElementById('stat-vol').textContent       = fmt(m.volatilidade_anual) + '%';
+    document.getElementById('stat-nativos').textContent   = m.n_ativos;
+
+    // ── Carta mensal ──
+    const carta = d.carta_mensal;
+    document.getElementById('carta-titulo').textContent = carta.titulo;
+    document.getElementById('carta-data').textContent   = carta.data;
+    const cartaBody = document.getElementById('carta-body');
+    cartaBody.innerHTML = carta.corpo.map(p => `<p>${p}</p>`).join('');
+
+    // ── Log de operações ──
+    const logList = document.getElementById('log-list');
+    logList.innerHTML = '';
+    const tipoMap = { 'Abertura':'entrada', 'Saída':'saida', 'Revisão':'rebal', 'Tese':'entrada', 'Pendente':'rebal' };
+    d.log.forEach(item => {
+      const tc = tipoMap[item.tipo] || 'rebal';
+      const retCls = item.resultado && item.resultado.startsWith('+') ? 'ret-pos' : item.resultado && item.resultado.startsWith('-') ? 'ret-neg' : '';
+      logList.innerHTML += `
+        <div class="log-item">
+          <span class="log-date">${item.data}</span>
+          <span class="log-type ${tc}">${item.tipo}</span>
+          <div>
+            <span class="log-desc">${item.descricao}</span>
+            <span class="log-motivo">${item.motivo}</span>
+          </div>
+          <span class="log-result ${retCls}">${item.resultado}</span>
+        </div>`;
+    });
+
+    // ── Fade-in ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'), i*80); });
+    }, { threshold:0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  }
+
+  // ── TABELA INTERATIVA ──
+  let sCol = -1, sDir = 1;
+
+  function updateCounts() {
+    const tbl  = document.getElementById('carteiraTable');
+    if (!tbl) return;
+    const rows = [...tbl.querySelectorAll('tbody tr')].filter(r => r.style.display !== 'none');
+    const pils = new Set(rows.map(r => r.children[1].innerText.trim()));
+    document.getElementById('countAtivos').textContent  = rows.length;
+    document.getElementById('countPilares').textContent = pils.size;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const tbl  = document.getElementById('carteiraTable');
+    const ths  = tbl.querySelectorAll('thead th');
+    const srch = document.getElementById('tableSearch');
+
+    function parseV(tr, col) {
+      const t = tr.children[col].innerText.trim();
+      const n = parseFloat(t.replace(/[^0-9.\-]/g,''));
+      return isNaN(n) ? t.toLowerCase() : n;
+    }
+
+    ths.forEach((th, i) => th.addEventListener('click', () => {
+      ths.forEach(h => h.classList.remove('sort-asc','sort-desc'));
+      if (sCol===i) sDir*=-1; else { sCol=i; sDir=1; }
+      th.classList.add(sDir===1?'sort-asc':'sort-desc');
+      const rows = [...tbl.querySelectorAll('tbody tr')];
+      rows.sort((a,b) => {
+        const va=parseV(a,i), vb=parseV(b,i);
+        return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sDir : va<vb?-sDir:va>vb?sDir:0;
+      });
+      rows.forEach(r => tbl.querySelector('tbody').appendChild(r));
+      updateCounts();
+    }));
+
+    srch.addEventListener('input', () => {
+      const q = srch.value.toLowerCase();
+      tbl.querySelectorAll('tbody tr').forEach(r => { r.style.display = r.innerText.toLowerCase().includes(q)?'':'none'; });
+      updateCounts();
+    });
+  });
+
+  init();
+
+</script>
+</body>
+</html>

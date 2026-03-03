@@ -1,0 +1,302 @@
+{
+  "meta": {
+    "fundo": "Itaúba",
+    "estrategia": "Inverse Volatility + Filtro Momentum 12-1",
+    "capital_inicial": 100000,
+    "patrimonio_atual": 109528.37,
+    "retorno_acumulado": 9.53,
+    "retorno_ibov": 18.98,
+    "alpha": -9.45,
+    "drawdown_max": -4.69,
+    "volatilidade_anual": 19.54,
+    "periodo_inicio": "2026-01-02",
+    "periodo_fim": "2026-02-27",
+    "n_ativos": 13,
+    "benchmark": "IBOV"
+  },
+  "curva": {
+    "labels": [
+      "Início",
+      "Jan/26",
+      "Feb/26"
+    ],
+    "carteira": [
+      100.0,
+      109.53,
+      109.42
+    ],
+    "ibov": [
+      100.0,
+      112.97,
+      118.98
+    ],
+    "dd_carteira": [
+      0.0,
+      -2.51,
+      -2.6
+    ],
+    "dd_ibov": [
+      0.0,
+      -1.8,
+      -0.25
+    ]
+  },
+  "ativos": [
+    {
+      "ticker": "BPAC11",
+      "pilar": "Financeiro/Digital",
+      "status": "Hold",
+      "peso_base": 7.41,
+      "peso_final": 7.66,
+      "vol_anual": 30.19,
+      "momentum": 92.87,
+      "mom_status": "Positivo",
+      "retorno": 18.87,
+      "valor_final": 9108.73,
+      "stop_pct": -60.39,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ROXO34",
+      "pilar": "Financeiro/Digital",
+      "status": "Hold",
+      "peso_base": 5.53,
+      "peso_final": 5.72,
+      "vol_anual": 40.44,
+      "momentum": 52.92,
+      "mom_status": "Positivo",
+      "retorno": -15.64,
+      "valor_final": 4825.91,
+      "stop_pct": -80.89,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "INBR32",
+      "pilar": "Financeiro/Digital",
+      "status": "Watch",
+      "peso_base": 5.77,
+      "peso_final": 5.97,
+      "vol_anual": 38.75,
+      "momentum": 55.82,
+      "mom_status": "Positivo",
+      "retorno": 1.11,
+      "valor_final": 6036.59,
+      "stop_pct": -77.5,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "VALE3",
+      "pilar": "Commodities",
+      "status": "Hold",
+      "peso_base": 10.17,
+      "peso_final": 10.52,
+      "vol_anual": 22.0,
+      "momentum": 71.67,
+      "mom_status": "Positivo",
+      "retorno": 23.25,
+      "valor_final": 12962.88,
+      "stop_pct": -44.0,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "PETR4",
+      "pilar": "Commodities",
+      "status": "Hold",
+      "peso_base": 9.87,
+      "peso_final": 10.2,
+      "vol_anual": 22.67,
+      "momentum": 21.47,
+      "mom_status": "Positivo",
+      "retorno": 28.98,
+      "valor_final": 13162.39,
+      "stop_pct": -45.34,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ENEV3",
+      "pilar": "Energia",
+      "status": "Watch",
+      "peso_base": 8.39,
+      "peso_final": 8.68,
+      "vol_anual": 26.67,
+      "momentum": 80.51,
+      "mom_status": "Positivo",
+      "retorno": 7.89,
+      "valor_final": 9361.36,
+      "stop_pct": -53.33,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "EQTL3",
+      "pilar": "Energia",
+      "status": "Hold",
+      "peso_base": 10.09,
+      "peso_final": 10.44,
+      "vol_anual": 22.17,
+      "momentum": 46.49,
+      "mom_status": "Positivo",
+      "retorno": 12.01,
+      "valor_final": 11691.56,
+      "stop_pct": -44.33,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "EGIE3",
+      "pilar": "Energia",
+      "status": "Watch",
+      "peso_base": 9.79,
+      "peso_final": 10.13,
+      "vol_anual": 22.85,
+      "momentum": 29.83,
+      "mom_status": "Positivo",
+      "retorno": 8.61,
+      "valor_final": 10998.0,
+      "stop_pct": -45.7,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "AZZA3",
+      "pilar": "Consumo",
+      "status": "Hold",
+      "peso_base": 4.42,
+      "peso_final": 4.57,
+      "vol_anual": 50.61,
+      "momentum": 14.28,
+      "mom_status": "Positivo",
+      "retorno": 4.45,
+      "valor_final": 4775.2,
+      "stop_pct": -101.22,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "KEPL3",
+      "pilar": "Commodities",
+      "status": "Watch",
+      "peso_base": 6.6,
+      "peso_final": 6.83,
+      "vol_anual": 33.87,
+      "momentum": 49.81,
+      "mom_status": "Positivo",
+      "retorno": -1.62,
+      "valor_final": 6720.06,
+      "stop_pct": -67.74,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "TOTS3",
+      "pilar": "Financeiro/Digital",
+      "status": "Watch",
+      "peso_base": 8.07,
+      "peso_final": 8.34,
+      "vol_anual": 27.73,
+      "momentum": 30.35,
+      "mom_status": "Positivo",
+      "retorno": -6.88,
+      "valor_final": 7769.43,
+      "stop_pct": -55.46,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "WEGE3",
+      "pilar": "Energia",
+      "status": "Hold",
+      "peso_base": 7.25,
+      "peso_final": 7.5,
+      "vol_anual": 30.85,
+      "momentum": 13.77,
+      "mom_status": "Positivo",
+      "retorno": 2.34,
+      "valor_final": 7674.95,
+      "stop_pct": -61.7,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "GMAT3",
+      "pilar": "Descentralização",
+      "status": "Hold",
+      "peso_base": 6.65,
+      "peso_final": 3.44,
+      "vol_anual": 33.65,
+      "momentum": -20.11,
+      "mom_status": "Negativo",
+      "retorno": 29.18,
+      "valor_final": 4441.3,
+      "stop_pct": -67.29,
+      "stop_atingido": false
+    }
+  ],
+  "pilares": [
+    {
+      "pilar": "Financeiro/Digital",
+      "retorno": 0.04,
+      "peso": 27.69
+    },
+    {
+      "pilar": "Commodities",
+      "retorno": 5.29,
+      "peso": 27.55
+    },
+    {
+      "pilar": "Energia",
+      "retorno": 2.99,
+      "peso": 36.75
+    },
+    {
+      "pilar": "Consumo",
+      "retorno": 0.2,
+      "peso": 4.57
+    },
+    {
+      "pilar": "Descentralização",
+      "retorno": 1.0,
+      "peso": 3.44
+    }
+  ],
+  "log": [
+    {
+      "data": "Jan 2026",
+      "tipo": "Abertura",
+      "descricao": "Montagem da carteira v1 — 13 ativos, 5 pilares",
+      "motivo": "Estratégia Inverse Volatility calibrada em 2025. Capital inicial R$ 100.000.",
+      "resultado": "—"
+    },
+    {
+      "data": "Fev 2026",
+      "tipo": "Saída",
+      "descricao": "NEOE3 → EQTL3",
+      "motivo": "OPA da Neoenergia sem upside residual. Equatorial como substituta estrutural no pilar energia.",
+      "resultado": "-0.4%"
+    },
+    {
+      "data": "Fev 2026",
+      "tipo": "Revisão",
+      "descricao": "Filtro Momentum 12-1 aplicado — v2",
+      "motivo": "EGIE3 e TOTS3 com momentum negativo: peso reduzido à metade. PETR4 e GMAT3 reforçados.",
+      "resultado": "Rebal."
+    },
+    {
+      "data": "Fev 2026",
+      "tipo": "Tese",
+      "descricao": "PETR4 — catalisador geopolítico",
+      "motivo": "Operação Epic Fury (28/02). Ormuz fechado. Petróleo +7%. P/L ~6x, yield ~14%. Posição mantida.",
+      "resultado": "+11.3%"
+    },
+    {
+      "data": "Mar 2026",
+      "tipo": "Pendente",
+      "descricao": "Rebalanceamento mensal — Cumaru e Itaúba",
+      "motivo": "Avaliar saída de TOTS3 e INBR32. Manter AZZA3 por tese de valuation. Novo filtro momentum.",
+      "resultado": "—"
+    }
+  ],
+  "carta_mensal": {
+    "titulo": "Janeiro · Fevereiro 2026 — Tese certa, mercado mais rápido",
+    "data": "Mar 2026",
+    "corpo": [
+      "PETR4 acumulou +11,3% no período por uma convergência de três vetores: alta de ~14% no Brent desde o início do ano, entrada de ~R$36 bilhões de capital estrangeiro na B3 com a Petrobras como principal porta de acesso, e expectativa de dividendos ordinários de R$0,94/ação com pagamento em fevereiro e março. A ação entrou no portfólio por P/L ~6x e yield ~14% — não como aposta geopolítica. O fechamento de Ormuz no dia 28 adicionou impulso pontual ao final do período, mas a alta já estava feita.",
+      "ROXO34 foi o ponto de atrito do período. O BDR acumulou queda de ~8% em 2026 apesar de um resultado operacional robusto no 4T25 — lucro líquido de US$895 milhões (+50% a/a), ROE de 33%, recorde histórico. A queda veio de fora: um relatório de research nos EUA reacendeu o temor de que a inteligência artificial possa afetar o setor financeiro, pressionando fintechs de crescimento. O mercado pune o múltiplo antes de qualquer deterioração de fundamento. A tese permanece intacta — o Nubank negocia a ~20x P/L 2026 com crescimento de crédito de 40% a/a e licença bancária nos EUA avançando.",
+      "O pilar de energia pesou negativamente via EGIE3 e ENEV3. A EGIE3 enfrenta pressão de juros altos e vencimento relevante de debêntures no horizonte — aguardamos o resultado do próximo trimestre antes de qualquer decisão. ENEV3 mantém tese intacta pela flexibilidade térmica, mas o risco regulatório da ANEEL permanece monitorado.",
+      "Alpha negativo de -9,12 p.p. está dentro do esperado para uma estratégia estruturalmente defensiva. O IBOV subiu 17,6% puxado por ativos de alto beta que intencionalmente não carregamos. O portfólio não foi construído para ganhar em janeiro — foi construído para não perder em dezembro de 2027."
+    ]
+  }
+}
