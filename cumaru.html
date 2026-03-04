@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cumaru — Wood Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:#0D1B2A;--navy-mid:#1A2E42;--white:#FAFAF7;--cream:#F0EBE0;
+      --wood:#8B6914;--wood-lt:#B8932A;--gray:#6B7280;--gray-lt:#E8E4DA;
+      --green:#1a6b4a;--red:#c0392b;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --mono:'DM Mono',monospace;--sans:'Outfit',sans-serif;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--white);color:var(--navy);font-family:var(--sans);font-weight:300}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;background:rgba(250,250,247,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-lt)}
+    .nav-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s}
+    .nav-back:hover{color:var(--navy)}.nav-back::before{content:'←';font-size:.8rem}
+    .nav-title{display:flex;flex-direction:column;align-items:center}
+    .nav-fund-name{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--navy)}
+    .nav-fund-sub{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wood)}
+    .nav-date{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--gray)}
+    .fund-header{margin-top:68px;background:var(--navy);padding:3.5rem 3rem 2.5rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end}
+    .fund-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wood-lt);margin-bottom:.75rem}
+    .fund-title{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--white);line-height:1;margin-bottom:.5rem}
+    .fund-strategy{font-family:var(--serif);font-size:1rem;font-style:italic;color:rgba(250,250,247,.5)}
+    .fund-kpis{display:flex;gap:2.5rem}.kpi{text-align:right}
+    .kpi-value{font-family:var(--mono);font-size:1.6rem;font-weight:400;line-height:1}
+    .kpi-value.pos{color:#4ade80}.kpi-value.neg{color:#f87171}.kpi-value.neutral{color:var(--white)}
+    .kpi-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,250,247,.4);margin-top:.25rem}
+    .main{max-width:1280px;margin:0 auto;padding:3rem 3rem 6rem}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+    .grid-full{margin-bottom:1.5rem}
+    .card{background:var(--white);border:1px solid var(--gray-lt);padding:2rem}
+    .card-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wood);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+    .card-label::before{content:'';display:block;width:20px;height:1px;background:var(--wood)}
+    .chart-wrap{position:relative;height:260px}.chart-wrap-h{position:relative;height:360px}
+    table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.75rem}
+    thead tr{border-bottom:1px solid var(--navy)}
+    thead th{padding:.5rem .75rem;text-align:left;font-weight:400;letter-spacing:.1em;text-transform:uppercase;font-size:.58rem;color:var(--gray)}
+    thead th:not(:first-child){text-align:right}
+    tbody tr{border-bottom:1px solid var(--gray-lt);transition:background .15s}
+    tbody tr:hover{background:var(--cream)}
+    tbody td{padding:.75rem;color:var(--navy)}
+    tbody td:not(:first-child){text-align:right}
+    .ticker{font-weight:400;letter-spacing:.05em}
+    .asset-name{font-family:var(--sans);font-size:.7rem;color:var(--gray);display:block;margin-top:.1rem}
+    .pill{display:inline-block;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:2px}
+    .pill-hold{background:#e8f5ee;color:#1a6b4a}.pill-watch{background:#fef9e7;color:#8B6914}.pill-stop{background:#fde8e8;color:#c0392b}
+    .ret-pos{color:var(--green)}.ret-neg{color:var(--red)}
+    .log-list{display:flex;flex-direction:column;gap:0}
+    .log-item{display:grid;grid-template-columns:90px 80px 1fr auto;gap:1rem;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--gray-lt);font-family:var(--mono);font-size:.72rem}
+    .log-item:last-child{border-bottom:none}
+    .log-date{color:var(--gray);font-size:.62rem}
+    .log-type{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;text-align:center}
+    .log-type.abertura,.log-type.entrada{background:#e8f5ee;color:#1a6b4a}
+    .log-type.saida{background:#fde8e8;color:#c0392b}
+    .log-type.rebal{background:#e8eef5;color:#1a3a6b}
+    .log-type.revisao{background:#f3e8ff;color:#6b21a8}
+    .log-desc{color:var(--navy);font-family:var(--sans);font-size:.78rem}
+    .log-motivo{color:var(--gray);font-size:.65rem;display:block;margin-top:.1rem}
+    .log-result{font-size:.7rem;text-align:right}
+    .resumo-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+    .resumo-mes{font-family:var(--serif);font-size:1.05rem;line-height:1.9;color:var(--navy)}
+    .resumo-mes p{margin-bottom:1rem}
+    .resumo-stats{display:flex;flex-direction:column;gap:1rem}
+    .stat-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--gray-lt);font-family:var(--mono);font-size:.72rem}
+    .stat-row:last-child{border-bottom:none}
+    .stat-key{color:var(--gray);letter-spacing:.05em}
+    .stat-val{font-weight:400;color:var(--navy)}
+    .stat-val.pos{color:var(--green)}.stat-val.neg{color:var(--red)}
+    footer{background:var(--navy);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center}
+    .footer-brand{font-family:var(--serif);font-size:1rem;color:var(--white)}
+    .footer-note{font-family:var(--mono);font-size:.58rem;color:rgba(250,250,247,.3);text-align:right;line-height:1.8}
+    .fade-in{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+    .fade-in.visible{opacity:1;transform:none}
+    @media(max-width:900px){
+      .grid-2{grid-template-columns:1fr}.fund-header{grid-template-columns:1fr}
+      .fund-kpis{justify-content:flex-start}.kpi{text-align:left}
+      .resumo-grid{grid-template-columns:1fr}
+      .log-item{grid-template-columns:80px 70px 1fr}.log-result{display:none}
+      nav{padding:1rem 1.5rem}.main{padding:2rem 1.5rem 4rem}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">Wood Capital</a>
+  <div class="nav-title">
+    <span class="nav-fund-name">Cumaru</span>
+    <span class="nav-fund-sub">Momentum Puro · Top 2 por Setor IBOV</span>
+  </div>
+  <span class="nav-date" id="nav-date">—</span>
+</nav>
+
+<div class="fund-header">
+  <div>
+    <div class="fund-label">Fundo Quantitativo · Wood Capital</div>
+    <h1 class="fund-title">Cumaru</h1>
+    <p class="fund-strategy">Momentum 12-1 Puro · Inverse Volatility · Rebalanceamento Mensal</p>
+  </div>
+  <div class="fund-kpis">
+    <div class="kpi"><div class="kpi-value neutral" id="kpi-retorno">—</div><div class="kpi-label">Retorno Acum.</div></div>
+    <div class="kpi"><div class="kpi-value neutral" id="kpi-alpha">—</div><div class="kpi-label">Alpha vs IBOV</div></div>
+    <div class="kpi"><div class="kpi-value neutral" id="kpi-patrim">—</div><div class="kpi-label">Patrimônio</div></div>
+  </div>
+</div>
+
+<main class="main">
+
+  <div class="grid-2">
+    <div class="card fade-in">
+      <div class="card-label">Patrimônio vs IBOV</div>
+      <div class="chart-wrap"><canvas id="chartPatrimonio"></canvas></div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-label">Drawdown</div>
+      <div class="chart-wrap"><canvas id="chartDrawdown"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card grid-full fade-in">
+    <div class="card-label" id="label-ativos">Carteira atual</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Ativo</th><th>Setor</th><th>Peso %</th><th>Retorno</th>
+          <th>Momentum 12-1</th><th>Vol. Anual</th><th>Stop</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-ativos"></tbody>
+    </table>
+  </div>
+
+  <div class="card grid-full fade-in">
+    <div class="card-label">Retorno Ponderado por Setor</div>
+    <div class="chart-wrap-h"><canvas id="chartSetores"></canvas></div>
+  </div>
+
+  <div class="card grid-full fade-in">
+    <div class="card-label" id="label-carta">Carta Mensal</div>
+    <div class="resumo-grid">
+      <div class="resumo-mes" id="carta-body"></div>
+      <div class="resumo-stats" id="stats-body"></div>
+    </div>
+  </div>
+
+  <div class="card grid-full fade-in">
+    <div class="card-label">Log de Operações</div>
+    <div class="log-list" id="log-list"></div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">Wood Capital · Cumaru</div>
+  <div class="footer-note">
+    Portfólio hipotético e educacional. Não constitui recomendação de investimento.<br>
+    A análise é pública porque a verdade não tem dono.
+  </div>
+</footer>
+
+<script>
+const DEMO_DATA={meta:{fundo:"Cumaru",estrategia:"Momentum 12-1 Puro · Top 2 por Setor IBOV · Inverse Volatility",capital_inicial:100000,patrimonio_atual:100000,retorno_acumulado:0,retorno_ibov:0,alpha:0,drawdown_max:0,volatilidade_anual:0,periodo_inicio:"2026-03-01",periodo_fim:"2026-03-01",n_ativos:0,n_setores:0,benchmark:"IBOV",proxima_rebal:"—"},curva:{labels:["Início"],carteira:[100],ibov:[100],dd_carteira:[0],dd_ibov:[0]},ativos:[],setores:[],log:[],carta_mensal:{titulo:"Aguardando primeiro fechamento",data:"—",corpo:["Execute cumaru_export.py e suba cumaru_data.json no repositório."]}};
+
+const fmtR=v=>(v>=0?'+':'')+v.toFixed(2).replace('.',',')+
+'%';
+const fmtBR=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+const fmtD=s=>new Date(s+'T12:00:00').toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}).replace('.','').replace(' ','/');
+
+const bOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'DM Mono',size:10},color:'#6B7280',boxWidth:12,padding:16}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0D1B2A',titleFont:{family:'DM Mono',size:10},bodyFont:{family:'DM Mono',size:10},padding:10,borderColor:'#1A2E42',borderWidth:1}},scales:{x:{grid:{color:'#E8E4DA',lineWidth:.5},ticks:{font:{family:'DM Mono',size:9},color:'#6B7280'}},y:{grid:{color:'#E8E4DA',lineWidth:.5},ticks:{font:{family:'DM Mono',size:9},color:'#6B7280'}}}};
+
+function renderDashboard(d){
+  const m=d.meta,c=d.curva;
+  document.getElementById('nav-date').textContent='Ref. '+fmtD(m.periodo_fim);
+  const kR=document.getElementById('kpi-retorno');
+  kR.textContent=fmtR(m.retorno_acumulado);kR.className='kpi-value '+(m.retorno_acumulado>=0?'pos':'neg');
+  const kA=document.getElementById('kpi-alpha');
+  kA.textContent=fmtR(m.alpha);kA.className='kpi-value '+(m.alpha>=0?'pos':'neg');
+  document.getElementById('kpi-patrim').textContent=fmtBR(m.patrimonio_atual);
+  document.getElementById('label-ativos').textContent=`Carteira atual — ${m.n_ativos} ativos · ${m.n_setores} setores`;
+
+  new Chart(document.getElementById('chartPatrimonio'),{type:'line',data:{labels:c.labels,datasets:[{label:'Cumaru',data:c.carteira,borderColor:'#1a6b4a',backgroundColor:'rgba(26,107,74,.06)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#1a6b4a',tension:.3,fill:true},{label:'IBOV',data:c.ibov,borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,.04)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#c0392b',tension:.3,fill:true}]},options:{...bOpts,scales:{...bOpts.scales,y:{...bOpts.scales.y,ticks:{...bOpts.scales.y.ticks,callback:v=>v.toFixed(0)}}}}});
+
+  new Chart(document.getElementById('chartDrawdown'),{type:'line',data:{labels:c.labels,datasets:[{label:'Cumaru DD',data:c.dd_carteira,borderColor:'#1a6b4a',backgroundColor:'rgba(26,107,74,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#1a6b4a',tension:.3,fill:true},{label:'IBOV DD',data:c.dd_ibov,borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,.05)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#c0392b',tension:.3,fill:true}]},options:{...bOpts,scales:{...bOpts.scales,y:{...bOpts.scales.y,ticks:{...bOpts.scales.y.ticks,callback:v=>v.toFixed(1)+'%'}}}}});
+
+  const tb=document.getElementById('tbody-ativos');
+  tb.innerHTML='';
+  d.ativos.forEach(a=>{
+    const stop=a.stop_atingido?'<span class="pill pill-stop">Stop</span>':a.retorno<0?'<span class="pill pill-watch">Watch</span>':'<span class="pill pill-hold">Hold</span>';
+    const mom=a.score_mom!==null?`<span class="${a.score_mom>=0?'ret-pos':'ret-neg'}">${a.score_mom>=0?'↑':'↓'} ${a.score_mom.toFixed(1)}%</span>`:'—';
+    tb.innerHTML+=`<tr><td><span class="ticker">${a.ticker}</span><span class="asset-name">${a.setor}</span></td><td>${a.setor}</td><td>${a.peso.toFixed(1)}%</td><td class="${a.retorno>=0?'ret-pos':'ret-neg'}">${fmtR(a.retorno)}</td><td>${mom}</td><td>${a.vol_anual.toFixed(1)}%</td><td class="ret-neg">${a.stop_pct.toFixed(1)}%</td><td>${stop}</td></tr>`;
+  });
+
+  if(d.setores&&d.setores.length>0){
+    const lbs=d.setores.map(s=>s.setor),rets=d.setores.map(s=>s.retorno),pesos=d.setores.map(s=>s.peso);
+    new Chart(document.getElementById('chartSetores'),{type:'bar',data:{labels:lbs,datasets:[{label:'Retorno Pond. (%)',data:rets,backgroundColor:rets.map(v=>v>=0?'rgba(26,107,74,.75)':'rgba(192,57,43,.75)'),borderRadius:2,xAxisID:'xRet'},{label:'Peso (%)',data:pesos,backgroundColor:'rgba(139,105,20,.25)',borderColor:'#8B6914',borderWidth:1,borderRadius:2,xAxisID:'xPeso'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'DM Mono',size:10},color:'#6B7280',boxWidth:12,padding:16}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0D1B2A',titleFont:{family:'DM Mono',size:10},bodyFont:{family:'DM Mono',size:10},padding:10}},scales:{y:{grid:{display:false},ticks:{font:{family:'DM Mono',size:9},color:'#6B7280'}},xRet:{position:'top',grid:{color:'#E8E4DA',lineWidth:.5},ticks:{font:{family:'DM Mono',size:9},color:'#1a6b4a',callback:v=>v.toFixed(1)+'%'}},xPeso:{position:'bottom',grid:{display:false},ticks:{font:{family:'DM Mono',size:9},color:'#8B6914',callback:v=>v.toFixed(0)+'%'}}}}});
+  }
+
+  const carta=d.carta_mensal;
+  document.getElementById('label-carta').textContent=`Carta Mensal — ${carta.titulo}`;
+  document.getElementById('carta-body').innerHTML=carta.corpo.map(p=>`<p>${p}</p>`).join('');
+
+  const stats=[['Capital Inicial',fmtBR(m.capital_inicial),''],['Patrimônio Atual',fmtBR(m.patrimonio_atual),''],['Retorno Acumulado',fmtR(m.retorno_acumulado),m.retorno_acumulado>=0?'pos':'neg'],['IBOV no Período',fmtR(m.retorno_ibov),m.retorno_ibov>=0?'pos':'neg'],['Alpha',fmtR(m.alpha),m.alpha>=0?'pos':'neg'],['Drawdown Máximo',fmtR(m.drawdown_max),'neg'],['Volatilidade Anualizada',m.volatilidade_anual.toFixed(1)+'%',''],['Nº de Ativos',String(m.n_ativos),''],['Setores',String(m.n_setores),''],['Próximo Rebalanceamento',m.proxima_rebal,''],['Benchmark',m.benchmark,''],['Início',fmtD(m.periodo_inicio),'']];
+  document.getElementById('stats-body').innerHTML=stats.map(([k,v,c])=>`<div class="stat-row"><span class="stat-key">${k}</span><span class="stat-val ${c}">${v}</span></div>`).join('');
+
+  const ll=document.getElementById('log-list');
+  ll.innerHTML='';
+  d.log.forEach(op=>{
+    const tipo=op.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const res=op.resultado&&op.resultado!=='—'?op.resultado:'—';
+    const rc=res.startsWith('+')?'ret-pos':res.startsWith('-')?'ret-neg':'';
+    ll.innerHTML+=`<div class="log-item"><span class="log-date">${op.data}</span><span class="log-type ${tipo}">${op.tipo}</span><div><span class="log-desc">${op.descricao}</span><span class="log-motivo">${op.motivo}</span></div><span class="log-result ${rc}">${res}</span></div>`;
+  });
+}
+
+async function init(){
+  let data;
+  try{const r=await fetch('cumaru_data.json');if(!r.ok)throw new Error();data=await r.json();}
+  catch(e){console.warn('cumaru_data.json não encontrado — DEMO');data=DEMO_DATA;}
+  renderDashboard(data);
+}
+init();
+
+const obs=new IntersectionObserver(es=>{es.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80)});},{threshold:.08});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

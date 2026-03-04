@@ -1,0 +1,718 @@
+{
+  "meta": {
+    "fundo": "Cumaru",
+    "estrategia": "Momentum 12-1 Puro · Top 2 por Setor IBOV · Inverse Volatility",
+    "capital_inicial": 100000,
+    "patrimonio_atual": 96372.41,
+    "retorno_acumulado": -3.63,
+    "retorno_ibov": -3.28,
+    "alpha": -0.35,
+    "drawdown_max": -3.63,
+    "volatilidade_anual": 40.72,
+    "periodo_inicio": "2026-03-01",
+    "periodo_fim": "2026-03-31",
+    "n_ativos": 37,
+    "n_setores": 20,
+    "benchmark": "IBOV",
+    "proxima_rebal": "30/04/2026"
+  },
+  "curva": {
+    "labels": [
+      "Início",
+      "Mar/26"
+    ],
+    "carteira": [
+      100.0,
+      96.37
+    ],
+    "ibov": [
+      100.0,
+      96.72
+    ],
+    "dd_carteira": [
+      0.0,
+      -3.63
+    ],
+    "dd_ibov": [
+      0.0,
+      -3.28
+    ]
+  },
+  "ativos": [
+    {
+      "ticker": "ENEV3",
+      "setor": "Petróleo e Gás",
+      "peso": 2.9,
+      "score_mom": 79.88,
+      "preco_entrada": 21.28,
+      "preco_atual": 20.49,
+      "cotas": 136.145,
+      "valor_alocado": 2897.16,
+      "valor_atual": 2789.61,
+      "vol_anual": 28.3,
+      "stop_pct": -56.6,
+      "retorno": -3.71,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "PRIO3",
+      "setor": "Petróleo e Gás",
+      "peso": 2.44,
+      "score_mom": 43.92,
+      "preco_entrada": 57.28,
+      "preco_atual": 55.12,
+      "cotas": 42.5159,
+      "valor_alocado": 2435.31,
+      "valor_atual": 2343.47,
+      "vol_anual": 33.66,
+      "stop_pct": -67.33,
+      "retorno": -3.77,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "VALE3",
+      "setor": "Mineração",
+      "peso": 3.37,
+      "score_mom": 69.37,
+      "preco_entrada": 88.16,
+      "preco_atual": 84.48,
+      "cotas": 38.1713,
+      "valor_alocado": 3365.18,
+      "valor_atual": 3224.71,
+      "vol_anual": 24.36,
+      "stop_pct": -48.73,
+      "retorno": -4.17,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "GOAU4",
+      "setor": "Siderurgia",
+      "peso": 2.91,
+      "score_mom": 43.11,
+      "preco_entrada": 9.27,
+      "preco_atual": 8.83,
+      "cotas": 314.1375,
+      "valor_alocado": 2912.05,
+      "valor_atual": 2773.83,
+      "vol_anual": 28.15,
+      "stop_pct": -56.31,
+      "retorno": -4.75,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "GGBR4",
+      "setor": "Siderurgia",
+      "peso": 2.94,
+      "score_mom": 32.5,
+      "preco_entrada": 20.8,
+      "preco_atual": 19.75,
+      "cotas": 141.2906,
+      "valor_alocado": 2938.84,
+      "valor_atual": 2790.49,
+      "vol_anual": 27.9,
+      "stop_pct": -55.79,
+      "retorno": -5.05,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "NEOE3",
+      "setor": "Energia Elétrica",
+      "peso": 3.59,
+      "score_mom": 65.78,
+      "preco_entrada": 32.85,
+      "preco_atual": 32.9,
+      "cotas": 109.3837,
+      "valor_alocado": 3593.25,
+      "valor_atual": 3598.72,
+      "vol_anual": 22.82,
+      "stop_pct": -45.63,
+      "retorno": 0.15,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ENGI11",
+      "setor": "Energia Elétrica",
+      "peso": 3.24,
+      "score_mom": 52.23,
+      "preco_entrada": 53.54,
+      "preco_atual": 52.32,
+      "cotas": 60.4986,
+      "valor_alocado": 3239.09,
+      "valor_atual": 3165.29,
+      "vol_anual": 25.31,
+      "stop_pct": -50.62,
+      "retorno": -2.28,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "BPAC11",
+      "setor": "Bancos",
+      "peso": 2.71,
+      "score_mom": 86.27,
+      "preco_entrada": 61.09,
+      "preco_atual": 57.51,
+      "cotas": 44.2819,
+      "valor_alocado": 2705.18,
+      "valor_atual": 2546.65,
+      "vol_anual": 30.31,
+      "stop_pct": -60.61,
+      "retorno": -5.86,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "BBDC4",
+      "setor": "Bancos",
+      "peso": 2.85,
+      "score_mom": 82.7,
+      "preco_entrada": 21.21,
+      "preco_atual": 20.2,
+      "cotas": 134.4716,
+      "valor_alocado": 2852.28,
+      "valor_atual": 2716.33,
+      "vol_anual": 28.74,
+      "stop_pct": -57.49,
+      "retorno": -4.77,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "INBR32",
+      "setor": "Fintechs",
+      "peso": 2.06,
+      "score_mom": 48.76,
+      "preco_entrada": 45.85,
+      "preco_atual": 43.7,
+      "cotas": 44.8924,
+      "valor_alocado": 2058.32,
+      "valor_atual": 1961.8,
+      "vol_anual": 39.83,
+      "stop_pct": -79.66,
+      "retorno": -4.69,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ROXO34",
+      "setor": "Fintechs",
+      "peso": 2.01,
+      "score_mom": 36.9,
+      "preco_entrada": 13.17,
+      "preco_atual": 13.12,
+      "cotas": 152.3192,
+      "valor_alocado": 2006.04,
+      "valor_atual": 1998.43,
+      "vol_anual": 40.87,
+      "stop_pct": -81.74,
+      "retorno": -0.38,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "PSSA3",
+      "setor": "Seguros",
+      "peso": 3.31,
+      "score_mom": 33.59,
+      "preco_entrada": 51.81,
+      "preco_atual": 50.63,
+      "cotas": 63.9453,
+      "valor_alocado": 3313.0,
+      "valor_atual": 3237.55,
+      "vol_anual": 24.75,
+      "stop_pct": -49.49,
+      "retorno": -2.28,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "IRBR3",
+      "setor": "Seguros",
+      "peso": 2.08,
+      "score_mom": 19.55,
+      "preco_entrada": 61.28,
+      "preco_atual": 58.69,
+      "cotas": 33.8618,
+      "valor_alocado": 2075.05,
+      "valor_atual": 1987.35,
+      "vol_anual": 39.51,
+      "stop_pct": -79.02,
+      "retorno": -4.23,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "LREN3",
+      "setor": "Varejo",
+      "peso": 2.04,
+      "score_mom": 32.21,
+      "preco_entrada": 15.52,
+      "preco_atual": 14.96,
+      "cotas": 131.7489,
+      "valor_alocado": 2044.74,
+      "valor_atual": 1970.96,
+      "vol_anual": 40.1,
+      "stop_pct": -80.19,
+      "retorno": -3.61,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "AZZA3",
+      "setor": "Varejo",
+      "peso": 1.68,
+      "score_mom": 18.77,
+      "preco_entrada": 26.44,
+      "preco_atual": 25.12,
+      "cotas": 63.4424,
+      "valor_alocado": 1677.42,
+      "valor_atual": 1593.67,
+      "vol_anual": 48.88,
+      "stop_pct": -97.75,
+      "retorno": -4.99,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ABEV3",
+      "setor": "Alimentos",
+      "peso": 3.69,
+      "score_mom": 32.74,
+      "preco_entrada": 15.91,
+      "preco_atual": 15.57,
+      "cotas": 231.6756,
+      "valor_alocado": 3685.96,
+      "valor_atual": 3607.19,
+      "vol_anual": 22.24,
+      "stop_pct": -44.48,
+      "retorno": -2.14,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "FLRY3",
+      "setor": "Saúde",
+      "peso": 2.78,
+      "score_mom": 56.36,
+      "preco_entrada": 16.9,
+      "preco_atual": 16.42,
+      "cotas": 164.2669,
+      "valor_alocado": 2776.11,
+      "valor_atual": 2697.26,
+      "vol_anual": 29.53,
+      "stop_pct": -59.06,
+      "retorno": -2.84,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "RDOR3",
+      "setor": "Saúde",
+      "peso": 2.82,
+      "score_mom": 54.89,
+      "preco_entrada": 39.7,
+      "preco_atual": 38.65,
+      "cotas": 71.0761,
+      "valor_alocado": 2821.72,
+      "valor_atual": 2747.09,
+      "vol_anual": 29.05,
+      "stop_pct": -58.11,
+      "retorno": -2.64,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "VIVT3",
+      "setor": "Telecom",
+      "peso": 3.43,
+      "score_mom": 74.9,
+      "preco_entrada": 42.26,
+      "preco_atual": 41.57,
+      "cotas": 81.1612,
+      "valor_alocado": 3429.87,
+      "valor_atual": 3373.87,
+      "vol_anual": 23.9,
+      "stop_pct": -47.81,
+      "retorno": -1.63,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "TIMS3",
+      "setor": "Telecom",
+      "peso": 3.17,
+      "score_mom": 71.29,
+      "preco_entrada": 27.3,
+      "preco_atual": 26.75,
+      "cotas": 116.1362,
+      "valor_alocado": 3170.52,
+      "valor_atual": 3106.64,
+      "vol_anual": 25.86,
+      "stop_pct": -51.72,
+      "retorno": -2.01,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "LWSA3",
+      "setor": "Tecnologia",
+      "peso": 1.74,
+      "score_mom": 41.89,
+      "preco_entrada": 3.53,
+      "preco_atual": 3.42,
+      "cotas": 494.2324,
+      "valor_alocado": 1744.64,
+      "valor_atual": 1690.27,
+      "vol_anual": 46.99,
+      "stop_pct": -93.98,
+      "retorno": -3.12,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "TOTS3",
+      "setor": "Tecnologia",
+      "peso": 2.74,
+      "score_mom": 13.06,
+      "preco_entrada": 37.33,
+      "preco_atual": 36.61,
+      "cotas": 73.371,
+      "valor_alocado": 2738.94,
+      "valor_atual": 2686.11,
+      "vol_anual": 29.93,
+      "stop_pct": -59.87,
+      "retorno": -1.93,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "MRVE3",
+      "setor": "Construção Civil",
+      "peso": 1.78,
+      "score_mom": 95.89,
+      "preco_entrada": 10.01,
+      "preco_atual": 9.53,
+      "cotas": 177.5977,
+      "valor_alocado": 1777.75,
+      "valor_atual": 1692.51,
+      "vol_anual": 46.12,
+      "stop_pct": -92.23,
+      "retorno": -4.8,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "DIRR3",
+      "setor": "Construção Civil",
+      "peso": 2.51,
+      "score_mom": 76.82,
+      "preco_entrada": 16.0,
+      "preco_atual": 15.23,
+      "cotas": 157.0485,
+      "valor_alocado": 2512.78,
+      "valor_atual": 2391.85,
+      "vol_anual": 32.63,
+      "stop_pct": -65.25,
+      "retorno": -4.81,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ECOR3",
+      "setor": "Logística",
+      "peso": 1.96,
+      "score_mom": 105.32,
+      "preco_entrada": 10.63,
+      "preco_atual": 10.05,
+      "cotas": 184.2051,
+      "valor_alocado": 1958.1,
+      "valor_atual": 1851.26,
+      "vol_anual": 41.87,
+      "stop_pct": -83.74,
+      "retorno": -5.46,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "RAIL3",
+      "setor": "Logística",
+      "peso": 2.42,
+      "score_mom": 1.32,
+      "preco_entrada": 15.75,
+      "preco_atual": 15.47,
+      "cotas": 153.4551,
+      "valor_alocado": 2416.92,
+      "valor_atual": 2373.95,
+      "vol_anual": 33.92,
+      "stop_pct": -67.84,
+      "retorno": -1.78,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "RANI3",
+      "setor": "Agro/Insumos",
+      "peso": 3.22,
+      "score_mom": 47.39,
+      "preco_entrada": 9.89,
+      "preco_atual": 9.69,
+      "cotas": 325.2463,
+      "valor_alocado": 3216.69,
+      "valor_atual": 3151.64,
+      "vol_anual": 25.49,
+      "stop_pct": -50.97,
+      "retorno": -2.02,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "KEPL3",
+      "setor": "Agro/Insumos",
+      "peso": 2.25,
+      "score_mom": 39.42,
+      "preco_entrada": 9.63,
+      "preco_atual": 8.31,
+      "cotas": 233.9329,
+      "valor_alocado": 2252.77,
+      "valor_atual": 1943.98,
+      "vol_anual": 36.39,
+      "stop_pct": -72.79,
+      "retorno": -13.71,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "KLBN11",
+      "setor": "Papel e Celulose",
+      "peso": 3.76,
+      "score_mom": 21.83,
+      "preco_entrada": 20.61,
+      "preco_atual": 19.88,
+      "cotas": 182.3864,
+      "valor_alocado": 3758.98,
+      "valor_atual": 3625.84,
+      "vol_anual": 21.81,
+      "stop_pct": -43.62,
+      "retorno": -3.54,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "SUZB3",
+      "setor": "Papel e Celulose",
+      "peso": 3.25,
+      "score_mom": 12.05,
+      "preco_entrada": 58.06,
+      "preco_atual": 57.27,
+      "cotas": 55.9551,
+      "valor_alocado": 3248.75,
+      "valor_atual": 3204.55,
+      "vol_anual": 25.24,
+      "stop_pct": -50.47,
+      "retorno": -1.36,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "CSMG3",
+      "setor": "Utilidades",
+      "peso": 2.82,
+      "score_mom": 194.6,
+      "preco_entrada": 55.34,
+      "preco_atual": 53.74,
+      "cotas": 50.9156,
+      "valor_alocado": 2817.67,
+      "valor_atual": 2736.2,
+      "vol_anual": 29.1,
+      "stop_pct": -58.19,
+      "retorno": -2.89,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "SAPR11",
+      "setor": "Utilidades",
+      "peso": 3.12,
+      "score_mom": 75.57,
+      "preco_entrada": 44.99,
+      "preco_atual": 42.71,
+      "cotas": 69.2496,
+      "valor_alocado": 3115.54,
+      "valor_atual": 2957.65,
+      "vol_anual": 26.31,
+      "stop_pct": -52.63,
+      "retorno": -5.07,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "WEGE3",
+      "setor": "Indústria",
+      "peso": 2.67,
+      "score_mom": 12.52,
+      "preco_entrada": 48.69,
+      "preco_atual": 47.4,
+      "cotas": 54.803,
+      "valor_alocado": 2668.36,
+      "valor_atual": 2597.66,
+      "vol_anual": 30.72,
+      "stop_pct": -61.45,
+      "retorno": -2.65,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "ASAI3",
+      "setor": "Distribuição",
+      "peso": 1.83,
+      "score_mom": 24.52,
+      "preco_entrada": 9.25,
+      "preco_atual": 8.65,
+      "cotas": 197.3439,
+      "valor_alocado": 1825.43,
+      "valor_atual": 1707.02,
+      "vol_anual": 44.91,
+      "stop_pct": -89.82,
+      "retorno": -6.49,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "PCAR3",
+      "setor": "Distribuição",
+      "peso": 1.3,
+      "score_mom": 1.94,
+      "preco_entrada": 3.15,
+      "preco_atual": 2.59,
+      "cotas": 413.7717,
+      "valor_alocado": 1303.38,
+      "valor_atual": 1071.67,
+      "vol_anual": 62.9,
+      "stop_pct": -125.8,
+      "retorno": -17.78,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "IGTI11",
+      "setor": "Shoppings",
+      "peso": 3.17,
+      "score_mom": 61.47,
+      "preco_entrada": 28.94,
+      "preco_atual": 28.22,
+      "cotas": 109.6671,
+      "valor_alocado": 3173.77,
+      "valor_atual": 3094.81,
+      "vol_anual": 25.83,
+      "stop_pct": -51.66,
+      "retorno": -2.49,
+      "stop_atingido": false
+    },
+    {
+      "ticker": "MULT3",
+      "setor": "Shoppings",
+      "peso": 3.47,
+      "score_mom": 56.93,
+      "preco_entrada": 34.11,
+      "preco_atual": 33.05,
+      "cotas": 101.8005,
+      "valor_alocado": 3472.42,
+      "valor_atual": 3364.51,
+      "vol_anual": 23.61,
+      "stop_pct": -47.22,
+      "retorno": -3.11,
+      "stop_atingido": false
+    }
+  ],
+  "setores": [
+    {
+      "setor": "Papel e Celulose",
+      "retorno": -0.18,
+      "peso": 7.01
+    },
+    {
+      "setor": "Energia Elétrica",
+      "retorno": -0.07,
+      "peso": 6.83
+    },
+    {
+      "setor": "Shoppings",
+      "retorno": -0.19,
+      "peso": 6.64
+    },
+    {
+      "setor": "Telecom",
+      "retorno": -0.12,
+      "peso": 6.6
+    },
+    {
+      "setor": "Utilidades",
+      "retorno": -0.24,
+      "peso": 5.94
+    },
+    {
+      "setor": "Siderurgia",
+      "retorno": -0.29,
+      "peso": 5.85
+    },
+    {
+      "setor": "Saúde",
+      "retorno": -0.15,
+      "peso": 5.6
+    },
+    {
+      "setor": "Bancos",
+      "retorno": -0.29,
+      "peso": 5.56
+    },
+    {
+      "setor": "Agro/Insumos",
+      "retorno": -0.37,
+      "peso": 5.47
+    },
+    {
+      "setor": "Seguros",
+      "retorno": -0.16,
+      "peso": 5.39
+    },
+    {
+      "setor": "Petróleo e Gás",
+      "retorno": -0.2,
+      "peso": 5.34
+    },
+    {
+      "setor": "Tecnologia",
+      "retorno": -0.11,
+      "peso": 4.48
+    },
+    {
+      "setor": "Logística",
+      "retorno": -0.15,
+      "peso": 4.38
+    },
+    {
+      "setor": "Construção Civil",
+      "retorno": -0.21,
+      "peso": 4.29
+    },
+    {
+      "setor": "Fintechs",
+      "retorno": -0.1,
+      "peso": 4.07
+    },
+    {
+      "setor": "Varejo",
+      "retorno": -0.16,
+      "peso": 3.72
+    },
+    {
+      "setor": "Alimentos",
+      "retorno": -0.08,
+      "peso": 3.69
+    },
+    {
+      "setor": "Mineração",
+      "retorno": -0.14,
+      "peso": 3.37
+    },
+    {
+      "setor": "Distribuição",
+      "retorno": -0.35,
+      "peso": 3.13
+    },
+    {
+      "setor": "Indústria",
+      "retorno": -0.07,
+      "peso": 2.67
+    }
+  ],
+  "log": [
+    {
+      "data": "Mar 2026",
+      "tipo": "Abertura",
+      "descricao": "Montagem da carteira Cumaru — Momentum puro, universo IBOV",
+      "motivo": "Top 2 por setor com momentum 12-1 positivo. Pesos Inverse Volatility. Capital inicial R$ 100.000.",
+      "resultado": "—"
+    }
+  ],
+  "carta_mensal": {
+    "titulo": "Março 2026 — Abertura",
+    "data": "Abr 2026",
+    "corpo": [
+      "O Cumaru abre em março de 2026 com 37 ativos distribuídos em 20 setores do IBOV, todos com momentum 12-1 positivo na data de entrada. A carteira é integralmente quantitativa — nenhum ativo foi selecionado por convicção qualitativa.",
+      "A metodologia é simples e replicável: filtra o universo IBOV pelos dois melhores scores de momentum em cada setor, aplica Inverse Volatility para definir pesos e rebalanceia todo mês. O objetivo é capturar o prêmio de momentum documentado na literatura sem concentração setorial excessiva.",
+      "O primeiro relatório de performance estará disponível em abril, após o fechamento do mês de março. Acompanhe o retorno acumulado versus IBOV a partir daí."
+    ]
+  }
+}
